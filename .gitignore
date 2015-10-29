@@ -1,1 +1,7 @@
 /target/
+/.externalToolBuilders/
+/.settings/
+/.classpath
+/.project
+/.tern-project
+/.sass-cache/
