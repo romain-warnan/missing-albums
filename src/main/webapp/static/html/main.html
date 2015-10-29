@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html data-ng-app="capitales">
+<head>
+<meta charset="UTF-8">
+<script	type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script type="text/javascript" src="/capitales/static/js/application.js"></script>
+<title>Jeu des capitales</title>
+</head>
+<body>
+ 	<form data-ng-controller="GameController as controller">
+ 		<fieldset data-ng-show="controller.step1">
+	 		<p>
+				<label>Nom : </label>
+				<input type="text" data-ng-model="controller.username" />
+			</p>
+	 		<p>
+				<label>Nombre de questions : </label>
+				<select data-ng-model="controller.size">
+					<option value="5">5</option>
+					<option value="10" selected="selected">10</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+					<option value="50">50</option>
+				</select>
+			</p>
+			<p>
+				<button type="submit" data-ng-click="controller.startGame()">Envoyer</button>
+			</p>
+		</fieldset>
+		<fieldset data-ng-show="controller.step2">
+			<ul data-ng-repeat="challenge in controller.quizz.challenges">
+				<li>{{challenge.question.value}}</li>
+			</ul>
+		</fieldset>
+	</form>
+</body>
+</html>
