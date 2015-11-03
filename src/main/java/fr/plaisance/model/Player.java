@@ -50,7 +50,8 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player : " + MoreObjects.toStringHelper(this)
+		return MoreObjects
+			.toStringHelper(this)
 			.add("id", id)
 			.add("username", username)
 			.toString();

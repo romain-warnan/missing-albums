@@ -2,6 +2,9 @@ package fr.plaisance.model;
 
 import java.util.Date;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 public class Game {
 
 	private Integer id;
@@ -48,5 +51,32 @@ public class Game {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.id);
+	}
+
+	@Override
+	public boolean equals(Object object) {
+
+		if (object == null) {
+			return false;
+		}
+		if (this.getClass() != object.getClass()) {
+			return false;
+		}
+		final Game other = (Game) object;
+		return Objects.equal(this.id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects
+			.toStringHelper(this)
+			.add("id", id)
+			.add("size", quizz.getChallenges().size())
+			.toString();
 	}
 }

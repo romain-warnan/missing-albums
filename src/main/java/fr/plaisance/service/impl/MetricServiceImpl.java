@@ -6,8 +6,6 @@ import org.simmetrics.StringMetric;
 import org.simmetrics.StringMetricBuilder;
 import org.simmetrics.metrics.Levenshtein;
 import org.simmetrics.simplifiers.Simplifiers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import fr.plaisance.service.MetricService;
@@ -17,7 +15,6 @@ public class MetricServiceImpl implements MetricService {
 
 	private static StringMetric metric;
 	private static final float THRESHOLD = 0.7f;
-	private static Logger logger = LoggerFactory.getLogger(MetricServiceImpl.class);
 
 	public MetricServiceImpl() {
 		metric = StringMetricBuilder
@@ -32,7 +29,6 @@ public class MetricServiceImpl implements MetricService {
 			return false;
 		}
 		float score = metric.compare(a, b);
-		logger.info(String.valueOf(score));
 		return score > THRESHOLD;
 	}
 

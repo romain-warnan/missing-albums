@@ -15,6 +15,10 @@
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
 
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+   	</listener>
+
 	<servlet>
 		<servlet-name>jersey</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

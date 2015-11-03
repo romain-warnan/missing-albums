@@ -12,8 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,8 +27,6 @@ import fr.plaisance.service.GameService;
 @Path("/")
 public class PlayerWebservice {
 
-	private static Logger logger = LoggerFactory.getLogger(PlayerWebservice.class);
-
 	@Autowired
 	private MongoOperations mongoOperation;
 
@@ -45,7 +41,6 @@ public class PlayerWebservice {
 	@Path("/player/add")
 	public Player addPlayer(@QueryParam("username") String username) {
 		Player player = Games.newPlayer(username);
-		logger.info(player.toString());
 		mongoOperation.save(player);
 		return player;
 	}
