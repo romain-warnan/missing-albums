@@ -4,37 +4,37 @@ import com.google.common.base.Objects;
 
 public class Proposition {
 
-	private Question question;
-	private Answer answer;
-	private Boolean correct;
+	private Challenge challenge;
+	private String value;
+	private boolean correct;
 
-	public Question getQuestion() {
-		return question;
+	public Challenge getChallenge() {
+		return challenge;
 	}
 
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setChallenge(Challenge challenge) {
+		this.challenge = challenge;
 	}
 
-	public Answer getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(Answer answer) {
-		this.answer = answer;
-	}
-
-	public Boolean isCorrect() {
+	public boolean isCorrect() {
 		return correct;
 	}
 
-	public void setCorrect(Boolean correct) {
+	public void setCorrect(boolean correct) {
 		this.correct = correct;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this.question);
+		return Objects.hashCode(this.challenge.getQuestion());
 	}
 
 	@Override
@@ -47,11 +47,11 @@ public class Proposition {
 			return false;
 		}
 		final Proposition other = (Proposition) object;
-		return Objects.equal(this.question, other.question) && Objects.equal(this.correct, other.correct);
+		return Objects.equal(this.challenge.getQuestion(), other.challenge.getQuestion()) && Objects.equal(this.correct, other.correct);
 	}
 
 	@Override
 	public String toString() {
-		return "Question: " + this.question.getValue() + "? " + this.answer + " correct: " + (this.correct == null ? "?" : this.correct);
+		return "Question: " + this.challenge.getQuestion().getValue() + "? " + this.value + " correct: " + this.correct;
 	}
 }

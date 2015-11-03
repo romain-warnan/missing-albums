@@ -53,5 +53,12 @@ public interface GameService {
 	 */
 	boolean correct(Challenge challenge, String value);
 
-	boolean answer(Game game, String value);
+	/**
+	 * Corrects a proposition by matching it against the right answers to a challenge.
+	 * 
+	 * @param game - The current game.
+	 * @param value - The answer given to the current challenge.
+	 * @return The corrected proposition to the current challenge.
+	 */
+	Proposition answer(Game game, String value);
 }

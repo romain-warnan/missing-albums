@@ -51,8 +51,8 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Proposition proposition(Challenge challenge, String value) {
 		Proposition proposition = new Proposition();
-		proposition.setQuestion(challenge.getQuestion());
-		proposition.setAnswer(Games.newAnswer(value));
+		proposition.setChallenge(challenge);
+		proposition.setValue(value);
 		proposition.setCorrect(this.correct(challenge, value));
 		return proposition;
 	}
@@ -63,7 +63,7 @@ public class GameServiceImpl implements GameService {
 			.getPaper()
 			.getPropositions()
 			.stream()
-			.map(Proposition::getQuestion)
+			.map(proposition -> proposition.getChallenge().getQuestion())
 			.collect(Collectors.toList());
 		List<Challenge> challenges = game
 			.getQuizz()
@@ -87,12 +87,11 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public boolean answer(Game game, String value) {
+	public Proposition answer(Game game, String value) {
 		Challenge challenge = this.challenge(game);
 		Proposition proposition = this.proposition(challenge, value);
-		boolean answer = proposition.isCorrect();
 		game.getPaper().addProposition(proposition);
-		return answer;
+		return proposition;
 	}
 
 }

@@ -2,6 +2,7 @@
 <html data-ng-app="capitales">
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script	type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 <script type="text/javascript" src="/capitales/static/js/application.js"></script>
 <title>Jeu des capitales</title>
@@ -15,9 +16,9 @@
 			</p>
 	 		<p>
 				<label>Nombre de questions : </label>
-				<select data-ng-model="controller.size">
+				<select data-ng-model="controller.size" data-gm-enter="controller.startGame()" >
 					<option value="5">5</option>
-					<option value="10" selected="selected">10</option>
+					<option value="10">10</option>
 					<option value="15">15</option>
 					<option value="20">20</option>
 					<option value="30">30</option>
@@ -26,13 +27,36 @@
 				</select>
 			</p>
 			<p>
-				<button type="submit" data-ng-click="controller.startGame()">Envoyer</button>
+				<button type="submit" data-ng-click="controller.startGame()" data-gm-enter="controller.startGame()">Envoyer</button>
 			</p>
 		</fieldset>
 		<fieldset data-ng-show="controller.step2">
-			<ul data-ng-repeat="challenge in controller.quizz.challenges">
-				<li>{{challenge.question.value}}</li>
-			</ul>
+			 <div>
+			 	<span>{{controller.proposition.challenge.question.value}}</span>
+			 	<ul data-ng-repeat="answer in controller.proposition.challenge.answers">
+					<li>{{answer.value}}</li>
+				</ul>
+				<div data-ng-show="controller.proposition.correct != null">
+					<span data-ng-show="controller.proposition.correct">Correct</span>
+					<span data-ng-hide="controller.proposition.correct">Faux</span>
+				</div>
+			 </div>
+			 <span>{{controller.question}} :</span>
+			 <input type="text" data-ng-model="controller.answer" data-gm-enter="controller.giveAnswer()" />
+		</fieldset>
+		<fieldset data-ng-show="controller.step3">
+			 <div>
+			 	<span>{{controller.proposition.challenge.question.value}}</span>
+			 	<ul data-ng-repeat="answer in controller.proposition.challenge.answers">
+					<li>{{answer.value}}</li>
+				</ul>
+				<div data-ng-show="controller.proposition.correct != null">
+					<span data-ng-show="controller.proposition.correct">Correct</span>
+					<span data-ng-hide="controller.proposition.correct">Faux</span>
+				</div>
+			 </div>
+			 <span>{{controller.question}} :</span>
+			 <input type="text" data-ng-model="controller.answer" data-gm-enter="controller.giveAnswer()" />
 		</fieldset>
 	</form>
 </body>
