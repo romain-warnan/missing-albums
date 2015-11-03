@@ -9,7 +9,7 @@
 	<logger name="org.mongodb" level="error" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="fr.plaisance" level="trace" additivity="false">
+	<logger name="fr.plaisance" level="info" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 	<root level="error">
