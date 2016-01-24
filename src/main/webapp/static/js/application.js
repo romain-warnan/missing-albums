@@ -33,7 +33,7 @@ angular.module('capitales', [])
 	controller.nextQuestion = function() {
 		$http.get('/capitales/service/next').success(
 			function(question, status, headers, config) {
-				if(question.value == ''){
+				if(typeof question.value === 'undefined'){
 					controller.step1 = false;
 					controller.step2 = false;
 					controller.step3 = true;
