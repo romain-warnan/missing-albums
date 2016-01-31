@@ -77,6 +77,7 @@ public class GameServiceImpl implements GameService {
 		return challenges.get(0);
 	}
 
+	@Override
 	public boolean correct(Challenge challenge, String value) {
 		for (Answer answer : challenge.getAnswers()) {
 			if (metricService.matches(answer.getValue(), value)) {
@@ -93,5 +94,4 @@ public class GameServiceImpl implements GameService {
 		game.getPaper().addProposition(proposition);
 		return proposition;
 	}
-
 }

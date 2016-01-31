@@ -51,7 +51,29 @@
 			 <input type="text" data-ng-model="controller.answer" data-gm-enter="controller.giveAnswer()" />
 		</fieldset>
 		<fieldset data-ng-show="controller.step3">
-			 <span>Terminé</span>
+			 <span>Résultats</span>
+			 <table>
+			 	<thead>
+				 	<tr>
+				 		<th>Question</th>
+				 		<th>Réponse</th>
+				 		<th>Correction</th>
+				 		<th>Correct</th>
+				 	</tr>
+			 	</thead>
+				<tbody data-ng-repeat="proposition in controller.paper.propositions">
+				 	<tr>
+				 		<td>{{proposition.challenge.question.value}}</td>
+				 		<td>{{proposition.value}}</td>
+				 		<td>
+							<ul data-ng-repeat="answer in proposition.challenge.answers">
+								<li>{{answer.value}}</li>
+							</ul>
+				 		</td>
+				 		<td>{{proposition.correct}}</td>
+				 	</tr>
+				</tbody>
+			 </table>
 		</fieldset>
 	</form>
 </body>

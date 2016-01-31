@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import fr.plaisance.builder.Games;
 import fr.plaisance.model.Challenge;
 import fr.plaisance.model.Game;
+import fr.plaisance.model.Paper;
 import fr.plaisance.model.Player;
 import fr.plaisance.model.Proposition;
 import fr.plaisance.model.Question;
@@ -57,6 +58,13 @@ public class GameWebservice {
 	public Proposition answer(@PathParam("answer") String answer) {
 		Game game = this.getGame();
 		return this.gameService.answer(game, answer);
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	@Path("/end")
+	public Paper end() {
+		return this.getGame().getPaper();
 	}
 
 	private Game getGame() {

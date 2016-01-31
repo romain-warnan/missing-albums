@@ -27,6 +27,14 @@ angular.module('capitales', [])
 			function(proposition, status, headers, config) {
 				controller.proposition = proposition;
 				controller.nextQuestion();
+				controller.answer = '';
+		});
+	};
+	
+	controller.end = function() {
+		$http.get('/capitales/service/end').success(
+			function(paper, status, headers, config) {
+				controller.paper = paper;
 		});
 	};
 	
@@ -37,6 +45,7 @@ angular.module('capitales', [])
 					controller.step1 = false;
 					controller.step2 = false;
 					controller.step3 = true;
+					controller.end();
 				}
 				else {
 					controller.question = question.value;
