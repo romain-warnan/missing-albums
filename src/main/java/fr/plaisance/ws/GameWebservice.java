@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import fr.plaisance.builder.Games;
@@ -30,6 +31,9 @@ public class GameWebservice {
 
 	@Autowired
 	private HttpServletRequest request;
+
+	@Autowired
+	private MongoOperations mongoOperations;
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -64,7 +68,9 @@ public class GameWebservice {
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@Path("/end")
 	public Paper end() {
-		return this.getGame().getPaper();
+		Paper paper = this.getGame().getPaper();
+		mongoOperations.save(paper);
+		return paper;
 	}
 
 	private Game getGame() {
