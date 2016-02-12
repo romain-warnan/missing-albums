@@ -10,10 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import fr.plaisance.builder.Games;
+import fr.plaisance.dao.PaperDao;
 import fr.plaisance.model.Challenge;
 import fr.plaisance.model.Game;
 import fr.plaisance.model.Paper;
@@ -33,7 +33,7 @@ public class GameWebservice {
 	private HttpServletRequest request;
 
 	@Autowired
-	private MongoOperations mongoOperations;
+	private PaperDao paperDao;
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -69,7 +69,7 @@ public class GameWebservice {
 	@Path("/end")
 	public Paper end() {
 		Paper paper = this.getGame().getPaper();
-		mongoOperations.save(paper);
+		paperDao.save(paper);
 		return paper;
 	}
 
