@@ -15,23 +15,12 @@
 	">
 
 	<context:component-scan base-package="fr.plaisance" />
-	<cache:annotation-driven />
-	<aop:aspectj-autoproxy />
-	
-	<mongo:mongo host="localhost" port="27017" />
-	<mongo:db-factory dbname="capitales_db" />
- 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	</bean>
-	<bean id="mongoRepositoryFactory" class="org.springframework.data.mongodb.repository.support.MongoRepositoryFactory">
-    	<constructor-arg ref="mongoTemplate" />
-	</bean>
-	
-	<bean id="cacheManager"  class="org.springframework.cache.support.SimpleCacheManager">
-		<property name="caches">
-			<set>
-				<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" name="dataCache"/>
-			</set>
+	<bean id="properties"
+      class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="locations">
+			<list>
+				<value>classpath*:configuration.properties</value>
+			</list>
 		</property>
 	</bean>
 </beans>

@@ -5,21 +5,27 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.plaisance</groupId>
-	<artifactId>capitales</artifactId>
+	<artifactId>album-release-notification</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	<name>Jeux des capitales</name>
-	<description>
-	  	Un super jeu pour apprendre les capitales, les pays, les drapeaux, les états etc.
-	  	Jersey, Ajax, Angular, Sass, Java 8, Spring
-	</description>
-		<properties>
-	    	<spring.version>4.1.6.RELEASE</spring.version>
-	    	<jersey.version>2.17</jersey.version>
-			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		</properties>
-		<dependencies> 
-
+	<name>Album release notification</name>
+	<description></description>
+	<properties>
+    	<spring.version>4.1.6.RELEASE</spring.version>
+    	<jersey.version>2.22.2</jersey.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencies> 
+	
+		<!-- JID3 -->
+		<dependency>
+			<groupId>org.blinkenlights.jid3</groupId>
+			<artifactId>JID3</artifactId>
+			<version>0.46</version>
+		</dependency>
+	
+	
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -75,14 +81,8 @@
 		<!-- Jersey -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.glassfish.jersey.ext</groupId>
-		    <artifactId>jersey-spring3</artifactId>
-		    <version>${jersey.version}</version>
+			<artifactId>jersey-client</artifactId>
+			<version>2.22.2</version>
 		</dependency>
 
 		<!-- Servlet -->
