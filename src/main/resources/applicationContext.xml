@@ -19,7 +19,7 @@
       class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 			<property name="locations">
 			<list>
-				<value>classpath*:configuration.properties</value>
+				<value>classpath*:discogs.properties</value>
 			</list>
 		</property>
 	</bean>
