@@ -2,6 +2,7 @@ package fr.plaisance.arn.model;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
+import org.apache.commons.lang3.StringUtils;
 
 public class Album implements Comparable<Album> {
 
@@ -27,14 +28,14 @@ public class Album implements Comparable<Album> {
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Album) {
 			Album other = (Album) object;
-			return Objects.equal(this.name, other.name);
+			return StringUtils.equalsIgnoreCase(this.name, other.name);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this.name);
+		return Objects.hashCode(StringUtils.lowerCase(this.name));
 	}
 
 	@Override

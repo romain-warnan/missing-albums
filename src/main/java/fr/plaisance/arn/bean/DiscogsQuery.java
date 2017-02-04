@@ -1,8 +1,8 @@
 package fr.plaisance.arn.bean;
 
-import java.util.List;
-
 import com.owlike.genson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class DiscogsQuery {
 

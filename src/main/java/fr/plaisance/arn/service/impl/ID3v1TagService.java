@@ -55,5 +55,4 @@ public class ID3v1TagService implements TagService {
 		Model.addAlbumToArtist(artist, album);
 		return artists;
 	}
-
 }

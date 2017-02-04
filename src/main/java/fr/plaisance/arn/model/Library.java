@@ -13,5 +13,4 @@ public class Library {
 	public void setArtists(Set<Artist> artists) {
 		this.artists = artists;
 	}
-
 }

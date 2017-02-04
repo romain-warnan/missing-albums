@@ -1,11 +1,10 @@
 package fr.plaisance.arn.service;
 
-import java.util.Map;
-
-import org.blinkenlights.jid3.v1.ID3V1Tag;
-
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
+import org.blinkenlights.jid3.v1.ID3V1Tag;
+
+import java.util.Map;
 
 public interface TagService {
 

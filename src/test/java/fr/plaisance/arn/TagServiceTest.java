@@ -1,7 +1,8 @@
 package fr.plaisance.arn;
 
-import java.io.IOException;
-
+import fr.plaisance.arn.model.Album;
+import fr.plaisance.arn.model.Artist;
+import fr.plaisance.arn.service.TagService;
 import org.assertj.core.api.Assertions;
 import org.blinkenlights.jid3.v1.ID3V1Tag;
 import org.junit.BeforeClass;
@@ -15,9 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import fr.plaisance.arn.model.Album;
-import fr.plaisance.arn.model.Artist;
-import fr.plaisance.arn.service.TagService;
+import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })

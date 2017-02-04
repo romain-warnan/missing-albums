@@ -1,11 +1,10 @@
 package fr.plaisance.arn.service;
 
-import java.nio.file.Path;
-
 import fr.plaisance.arn.model.Library;
+
+import java.nio.file.Path;
 
 public interface LocalLibraryService {
 
 	Library library(Path path);
-
 }
