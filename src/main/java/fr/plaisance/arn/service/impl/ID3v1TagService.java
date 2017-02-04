@@ -1,18 +1,18 @@
 package fr.plaisance.arn.service.impl;
 
-import java.io.File;
-import java.util.Map;
-
+import fr.plaisance.arn.model.Album;
+import fr.plaisance.arn.model.Artist;
+import fr.plaisance.arn.model.Model;
+import fr.plaisance.arn.service.TagService;
+import org.apache.commons.lang3.StringUtils;
 import org.blinkenlights.jid3.MP3File;
 import org.blinkenlights.jid3.v1.ID3V1Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import fr.plaisance.arn.model.Album;
-import fr.plaisance.arn.model.Artist;
-import fr.plaisance.arn.model.Model;
-import fr.plaisance.arn.service.TagService;
+import java.io.File;
+import java.util.Map;
 
 @Service
 public class ID3v1TagService implements TagService {
@@ -21,12 +21,12 @@ public class ID3v1TagService implements TagService {
 
 	@Override
 	public Album album(ID3V1Tag tag) {
-		return Model.newAlbum(tag.getAlbum(), tag.getYear());
+		return Model.newAlbum(StringUtils.trim(tag.getAlbum()), StringUtils.trim(tag.getYear()));
 	}
 
 	@Override
 	public Artist artist(ID3V1Tag tag) {
-		return Model.newArtist(tag.getArtist());
+		return Model.newArtist(StringUtils.trim(tag.getArtist()));
 	}
 
 	@Override

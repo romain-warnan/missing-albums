@@ -1,14 +1,12 @@
 package fr.plaisance.arn.service.impl;
 
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.HttpHeaders;
-
+import fr.plaisance.arn.bean.DiscogsQuery;
+import fr.plaisance.arn.bean.DiscogsQuery.DiscogsArtist;
+import fr.plaisance.arn.bean.DiscogsReleases;
+import fr.plaisance.arn.model.Album;
+import fr.plaisance.arn.model.Artist;
+import fr.plaisance.arn.model.Model;
+import fr.plaisance.arn.service.DiscogsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import fr.plaisance.arn.bean.DiscogsQuery;
-import fr.plaisance.arn.bean.DiscogsQuery.DiscogsArtist;
-import fr.plaisance.arn.bean.DiscogsReleases;
-import fr.plaisance.arn.model.Album;
-import fr.plaisance.arn.model.Artist;
-import fr.plaisance.arn.model.Model;
-import fr.plaisance.arn.service.DiscogsService;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.HttpHeaders;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @Service
 public class DiscogsServiceSimple implements DiscogsService {
