@@ -5,11 +5,12 @@ import com.google.common.collect.ComparisonChain;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Artist implements Comparable<Artist> {
 
     private String name;
-    private SortedSet<Album> albums;
+    private SortedSet<Album> albums = new TreeSet<>();
 
     public String getName() {
         return name;

@@ -24,6 +24,10 @@ public class Album implements Comparable<Album> {
 		this.year = year;
 	}
 
+	public boolean isAfter(String year){
+        return ComparisonChain.start().compare(this.year, year).result() >= 0;
+    }
+
 	@Override
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Album) {

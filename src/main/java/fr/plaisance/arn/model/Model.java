@@ -1,11 +1,9 @@
 package fr.plaisance.arn.model;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Model {
@@ -67,6 +65,9 @@ public abstract class Model {
     }
 
 	public static Set<Album> missingAlbums(Artist localArtist, Artist remoteArtist) {
+        if(CollectionUtils.isEmpty(remoteArtist.getAlbums())){
+            return Collections.emptySet();
+        }
 		return remoteArtist.getAlbums().stream()
 				.filter(album -> !localArtist.getAlbums().contains(album))
 				.collect(Collectors.toSet());
