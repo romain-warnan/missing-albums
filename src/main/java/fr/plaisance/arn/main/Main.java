@@ -15,7 +15,7 @@ public class Main {
 
     // TODO String genre
     // TODO -v -vv -vvv
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Params params = Params.getInstance();
         JCommander commander = new JCommander(params, args);
         commander.setProgramName("Album release notifier", "arn");
