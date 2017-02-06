@@ -8,8 +8,6 @@ import org.blinkenlights.jid3.v1.ID3V1Tag;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,8 +21,6 @@ import java.io.IOException;
 @WebAppConfiguration
 public class TagServiceTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(TagServiceTest.class);
-
 	private static String path = null;
 
 	@Autowired
@@ -37,7 +33,7 @@ public class TagServiceTest {
 			path = classPathResource.getFile().getPath();
 		}
 		catch (IOException e) {
-			logger.error(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -45,7 +41,7 @@ public class TagServiceTest {
 	public void album() {
 		ID3V1Tag tag = tagService.tag(path);
 		Album album = tagService.album(tag);
-		logger.info("album : " + album);
+		System.out.println("album : " + album);
 		Assertions.assertThat(album.getName()).isEqualToIgnoringCase("Jomsviking");
 		Assertions.assertThat(album.getYear()).isEqualToIgnoringCase("2016");
 	}
@@ -54,7 +50,7 @@ public class TagServiceTest {
 	public void artist() throws IOException {
 		ID3V1Tag tag = tagService.tag(path);
 		Artist artist = tagService.artist(tag);
-		logger.info("artist : " + artist);
+		System.out.println("artist : " + artist);
 		Assertions.assertThat(artist.getName()).isEqualToIgnoringCase("Amon Amarth");
 	}
 }

@@ -1,5 +1,6 @@
 package fr.plaisance.arn.service.impl;
 
+import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Library;
 import fr.plaisance.arn.model.Model;
@@ -7,8 +8,6 @@ import fr.plaisance.arn.service.LocalLibraryService;
 import fr.plaisance.arn.service.TagService;
 import org.apache.commons.io.FilenameUtils;
 import org.blinkenlights.jid3.v1.ID3V1Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +25,18 @@ import java.util.TreeSet;
 @Service
 public class FilesLibraryService implements LocalLibraryService {
 
-	private static final Logger logger = LoggerFactory.getLogger(FilesLibraryService.class);
-
 	@Autowired
 	private TagService tagService;
 
 	@Override
 	public Library library(Path path) {
+	    System.out.println(String.format("Analysing local music library [%s]", path.toString()));
 		AlbumsFileVisitor fileVisitor = new AlbumsFileVisitor();
 		try {
 			Files.walkFileTree(path, fileVisitor);
 		}
 		catch (IOException e) {
-			logger.error(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return Model.newLibrary(fileVisitor.getArtists());
 	}
@@ -55,13 +53,14 @@ public class FilesLibraryService implements LocalLibraryService {
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 			if (!attrs.isDirectory()) {
 				if (FilenameUtils.isExtension(file.toFile().getName(), "mp3")) {
+				    System.out.println(String.format("Scanning folder [%s]", file.getParent().toString()));
 					ID3V1Tag tag = tagService.tag(file.toFile().getAbsolutePath());
 					if (tag != null) {
 						tagService.update(artists, tag);
-						return FileVisitResult.SKIP_SIBLINGS;
+                        return Params.getInstance().skipSiblings ? FileVisitResult.SKIP_SIBLINGS : FileVisitResult.CONTINUE;
 					}
 					else {
-						logger.error(file.toString());
+						System.out.println(String.format("Impossible to extract infos from file '%s'", file.toFile().getName()));
 					}
 				}
 			}

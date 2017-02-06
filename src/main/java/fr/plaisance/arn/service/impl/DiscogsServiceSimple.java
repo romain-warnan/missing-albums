@@ -9,8 +9,6 @@ import fr.plaisance.arn.model.Model;
 import fr.plaisance.arn.service.DiscogsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -26,13 +24,12 @@ import java.util.stream.Collectors;
 @Service
 public class DiscogsServiceSimple implements DiscogsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(DiscogsServiceSimple.class);
-
 	@Autowired
 	private Properties properties;
 
 	@Override
 	public Artist find(String name) {
+        System.out.println(String.format("Searching missing albums for artist '%s'", name));
 		Artist artist = Model.newArtist(name);
 		DiscogsQuery query = this.query(name);
 		if (CollectionUtils.isNotEmpty(query.getArtists())) {
@@ -49,9 +46,9 @@ public class DiscogsServiceSimple implements DiscogsService {
 	}
 
 	private DiscogsQuery query(String artistName) {
-		logger.info(artistName);
+		System.out.println(String.format("Search database for artist '%s'", artistName));
 		Client client = ClientBuilder.newClient();
-		DiscogsQuery result = client
+		return client
 			.target("https://api.discogs.com")
 			.path("database/search")
 			.queryParam("q", artistName)
@@ -62,13 +59,12 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.header(HttpHeaders.ACCEPT, this.version())
 			.header(HttpHeaders.AUTHORIZATION, this.authorization())
 			.get(DiscogsQuery.class);
-		return result;
 	}
 
 	private DiscogsReleases releases(DiscogsArtist artist) {
-		logger.info(artist.getResourceUrl());
+		System.out.println(String.format("Fetch releases at URL [%s]", artist.getResourceUrl()));
 		Client client = ClientBuilder.newClient();
-		DiscogsReleases result = client
+		return client
 			.target(artist.getResourceUrl())
 			.path("releases")
 			.queryParam("per_page", "100")
@@ -79,7 +75,6 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.header(HttpHeaders.ACCEPT, this.version())
 			.header(HttpHeaders.AUTHORIZATION, this.authorization())
 			.get(DiscogsReleases.class);
-		return result;
 	}
 
 	private String version() {

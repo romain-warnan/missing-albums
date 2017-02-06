@@ -25,7 +25,6 @@ public class AlbumService {
     @Autowired
     private RemoteLibraryService remoteLibraryService;
 
-    // TODO Boolean skipSiblings
     // TODO String genre
     public Set<Album> findMissingAlbums(Set<Artist> artists, String year, Path path) {
         Set<Album> missingAlbums = new LinkedHashSet<>();
@@ -44,7 +43,6 @@ public class AlbumService {
                 }
             }
         }
-
         return missingAlbums;
     }
 
@@ -55,9 +53,8 @@ public class AlbumService {
         Library filteredLibrary = new Library();
         filteredLibrary.setArtists(library.getArtists()
                 .stream()
-                .filter(a -> artists.contains(a))
+                .filter(artists::contains)
                 .collect(Collectors.toSet()));
         return filteredLibrary;
     }
 }
-// filtre artist (liste), genre, date de début de l'album, skip siblings, path (par défaut répertoire courant)

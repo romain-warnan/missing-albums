@@ -7,8 +7,6 @@ import fr.plaisance.arn.service.TagService;
 import org.apache.commons.lang3.StringUtils;
 import org.blinkenlights.jid3.MP3File;
 import org.blinkenlights.jid3.v1.ID3V1Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,8 +14,6 @@ import java.util.Map;
 
 @Service
 public class ID3v1TagService implements TagService {
-
-	private static final Logger logger = LoggerFactory.getLogger(ID3v1TagService.class);
 
 	@Override
 	public Album album(ID3V1Tag tag) {
@@ -36,7 +32,7 @@ public class ID3v1TagService implements TagService {
 			return mp3.getID3V1Tag();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return null;
 	}

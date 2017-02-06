@@ -17,6 +17,7 @@ public class DiscogsLibraryService implements RemoteLibraryService {
 
 	@Override
 	public Library library(Library localLibrary) {
+		System.out.println("Building remote library from local library");
 		Library remoteLibrary = Model.newLibrary();
 		for (Artist artist : localLibrary.getArtists()) {
 			Artist remoteArtist = discogsService.find(artist.getName());
