@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,19 +23,25 @@ import java.util.TreeSet;
 @Service
 public class FilesLibraryService implements LocalLibraryService {
 
+    private static final int BAR_SIZE = 75;
+
     @Autowired
     private TagService tagService;
 
     @Override
     public Library library(Path path) {
-        System.out.println(String.format("Analysing local music library [%s]", path.toString()));
         try {
+            System.out.println("Estimating total time…");
+            // long total = Files.find(path, 5, (p, a) -> a.isDirectory()).count() - 1;
             TotalFileVisitor totalFileVisitor = new TotalFileVisitor();
             Files.walkFileTree(path, totalFileVisitor);
-            AlbumsFileVisitor albumsFileVisitor = new AlbumsFileVisitor(totalFileVisitor.getTotal());
-            // System.out.println("============================");
+            int total = totalFileVisitor.getTotal();
+
+            System.out.println(String.format("Analysing local music library [%s]", path.toString()));
+            AlbumsFileVisitor albumsFileVisitor = new AlbumsFileVisitor(total);
             Files.walkFileTree(path, albumsFileVisitor);
             System.out.println();
+
             return Model.newLibrary(albumsFileVisitor.getArtists());
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -48,14 +51,15 @@ public class FilesLibraryService implements LocalLibraryService {
 
     private class TotalFileVisitor extends SimpleFileVisitor<Path> {
 
-        private int total = 0;
+        private int total;
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            // System.out.println(file.toString());
-            if (!attrs.isDirectory() && FilenameUtils.isExtension(file.toFile().getName(), "mp3")) {
+            if (!attrs.isDirectory()) {
                 total++;
-                return FileVisitResult.SKIP_SIBLINGS;
+                if (FilenameUtils.isExtension(file.toFile().getName(), "mp3")) {
+                    return Params.getInstance().skipSiblings ? FileVisitResult.SKIP_SIBLINGS : FileVisitResult.CONTINUE;
+                }
             }
             return FileVisitResult.CONTINUE;
         }
@@ -68,8 +72,8 @@ public class FilesLibraryService implements LocalLibraryService {
     private class AlbumsFileVisitor extends SimpleFileVisitor<Path> {
 
         private Map<String, Artist> artists = new HashMap<>();
-        private int nombre = 0;
         private int total;
+        private int nombre = 0;
         private int previousStep = -1;
 
         public AlbumsFileVisitor(int total) {
@@ -78,18 +82,17 @@ public class FilesLibraryService implements LocalLibraryService {
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            // System.out.println(file.toString());
             if (!attrs.isDirectory()) {
                 nombre++;
                 printProgressBar();
                 if (FilenameUtils.isExtension(file.toFile().getName(), "mp3")) {
-                    // System.out.println(String.format("Scanning folder [%s]", file.getParent().toString()));
                     ID3V1Tag tag = tagService.tag(file.toFile().getAbsolutePath());
                     if (tag != null) {
                         tagService.update(artists, tag);
                         return Params.getInstance().skipSiblings ? FileVisitResult.SKIP_SIBLINGS : FileVisitResult.CONTINUE;
                     } else {
-                        // System.out.println(String.format("Impossible to extract infos from file '%s'", file.toFile().getName()));
+                        // TODO Gérer les erreurs : au moins un booléen pour dire qu'il y en a. Dans l'idéal, la liste des fichiers en erreur.
+                        // TODO String.format("Impossible to extract infos from file '%s'", file.toFile().getName())
                     }
                 }
             }
@@ -97,14 +100,14 @@ public class FilesLibraryService implements LocalLibraryService {
         }
 
         private void printProgressBar() {
-            int currentStep = (100 * nombre) / total;
-            if(previousStep < currentStep){
+            int currentStep = Math.min((BAR_SIZE * nombre) / total, BAR_SIZE);
+            if (previousStep < currentStep) {
                 previousStep = currentStep;
+                int pourcentage = (currentStep * 100) / BAR_SIZE;
                 System.out.print(
-                    StringUtils.rightPad("\r[", currentStep, "=") +
-                    StringUtils.leftPad("]", 100 - currentStep, " ") +
-                    " " +  currentStep + "% " +
-                    nombre + "/" + total);
+                        StringUtils.rightPad("\r[", currentStep, "=") +
+                        StringUtils.leftPad("]", BAR_SIZE + 1 - currentStep, " ") +
+                        " " + pourcentage + "% ");
             }
         }
 
