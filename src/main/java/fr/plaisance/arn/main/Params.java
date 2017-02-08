@@ -37,7 +37,7 @@ public class Params {
     @Parameter(names = {"-y", "--year"}, description =
         "Missing albums will not be displayed if they were released before this year. " +
         "Example: --year 2015")
-    public Integer year = 0;
+    public String year = null;
 
     @Parameter(names = {"-h", "--help"}, help = true, description =
         "Display this message. " +

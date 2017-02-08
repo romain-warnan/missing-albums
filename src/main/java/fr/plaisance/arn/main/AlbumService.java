@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class AlbumService {
     private RemoteLibraryService remoteLibraryService;
 
     // TODO String genre
-    public Set<Album> findMissingAlbums(Set<Artist> artists, String year, Path path) {
+    public Set<Album> findMissingAlbums(List<Artist> artists, String year, Path path) {
         Set<Album> missingAlbums = new LinkedHashSet<>();
 
         Library localLibrary = filter(localLibraryService.library(path), artists);
@@ -46,7 +47,7 @@ public class AlbumService {
         return missingAlbums;
     }
 
-    private static Library filter(Library library, Set<Artist> artists) {
+    private static Library filter(Library library, List<Artist> artists) {
         if(CollectionUtils.isEmpty(artists)){
             return library;
         }
