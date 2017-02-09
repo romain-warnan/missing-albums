@@ -42,7 +42,7 @@ public class FilesLibraryService implements LocalLibraryService {
             Files.walkFileTree(path, albumsFileVisitor);
             System.out.println();
 
-            return Model.newLibrary(albumsFileVisitor.getArtists());
+            return Model.newLibrary(albumsFileVisitor.   getArtists());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
