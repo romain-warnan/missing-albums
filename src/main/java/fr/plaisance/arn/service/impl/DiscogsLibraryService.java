@@ -1,13 +1,13 @@
 package fr.plaisance.arn.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Library;
 import fr.plaisance.arn.model.Model;
 import fr.plaisance.arn.service.DiscogsService;
 import fr.plaisance.arn.service.RemoteLibraryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DiscogsLibraryService implements RemoteLibraryService {
@@ -17,7 +17,7 @@ public class DiscogsLibraryService implements RemoteLibraryService {
 
 	@Override
 	public Library library(Library localLibrary) {
-		System.out.println("Building remote library from local library");
+		Params.logger.trace("Building remote library from local library");
 		Library remoteLibrary = Model.newLibrary();
 		for (Artist artist : localLibrary.getArtists()) {
 			Artist remoteArtist = discogsService.find(artist.getName());

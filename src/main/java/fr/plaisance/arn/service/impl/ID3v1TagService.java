@@ -1,5 +1,6 @@
 package fr.plaisance.arn.service.impl;
 
+import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Model;
@@ -32,7 +33,7 @@ public class ID3v1TagService implements TagService {
 			return mp3.getID3V1Tag();
 		}
 		catch (Exception e) {
-			System.out.println(e.getMessage());
+			Params.logger.trace(e.getMessage());
 		}
 		return null;
 	}

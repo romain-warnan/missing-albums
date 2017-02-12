@@ -22,6 +22,21 @@ public class Main {
 
     // TODO String genre
     public static void main(String[] args) {
+        Params params = beforeRunning(args);
+
+        try(AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")){
+            AlbumService albumService = context.getBean("albumService", AlbumService.class);
+
+            Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.year, params.path);
+            map.forEach((artist, albums) -> {
+                Params.logger.info(artist.getName());
+                albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
+            });
+        }
+
+    }
+
+    private static Params beforeRunning(String[] args){
         Params params = Params.getInstance();
         JCommander commander = new JCommander(params, args);
         commander.setProgramName("Album release notifier");
@@ -31,35 +46,23 @@ public class Main {
             System.exit(0);
         }
 
-        try(AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")){
-            AlbumService albumService = context.getBean("albumService", AlbumService.class);
-
-            if(params.quiet){
-                params.logger.setLevel(Level.INFO);
-            }
-
-            if(params.verbose){
-                params.logger.setLevel(Level.TRACE);
-            }
-
-            logger.trace("TRACE");
-            logger.debug("DEBUG");
-            logger.info("INFO");
-            logger.warn("WARN");
-            logger.error("ERROR");
-
-            if(CollectionUtils.isNotEmpty(params.artists)) {
-                System.out.println(String.format("Detected artists: %s",
-                        params.artists.stream().map(Artist::getName).collect(Collectors.joining(", "))));
-            }
-            if(StringUtils.isNotBlank(params.year)) {
-                System.out.println(String.format("Searching for missing albums after year %s",params.year));
-            }
-            Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.year, params.path);
-            map.forEach((artist, albums) -> {
-                System.out.println(artist.getName());
-                albums.forEach(album -> System.out.println(String.format("* %s — %s", album.getYear(), album.getName())));
-            });
+        if(params.quiet){
+            Params.logger.setLevel(Level.INFO);
         }
+
+        if(params.verbose){
+            Params.logger.setLevel(Level.TRACE);
+        }
+
+        if(CollectionUtils.isNotEmpty(params.artists)) {
+            Params.logger.debug(String.format("Detected artists: %s",
+                    params.artists.stream().map(Artist::getName).collect(Collectors.joining(", "))));
+        }
+
+        if(StringUtils.isNotBlank(params.year)) {
+            Params.logger.debug(String.format("Searching for missing albums after year %s",params.year));
+        }
+
+        return params;
     }
 }

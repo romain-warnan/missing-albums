@@ -31,20 +31,19 @@ public class FilesLibraryService implements LocalLibraryService {
     @Override
     public Library library(Path path) {
         try {
-            System.out.println("Estimating total time…");
-            // long total = Files.find(path, 5, (p, a) -> a.isDirectory()).count() - 1;
+            Params.logger.debug("Estimating total time...");
             TotalFileVisitor totalFileVisitor = new TotalFileVisitor();
             Files.walkFileTree(path, totalFileVisitor);
             int total = totalFileVisitor.getTotal();
 
-            System.out.println(String.format("Analysing local music library [%s]", path.toString()));
+            Params.logger.debug(String.format("Analysing local music library [%s]", path.toString()));
             AlbumsFileVisitor albumsFileVisitor = new AlbumsFileVisitor(total);
             Files.walkFileTree(path, albumsFileVisitor);
-            System.out.println();
+            Params.logger.debug("\n");
 
             return Model.newLibrary(albumsFileVisitor.   getArtists());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Params.logger.debug(e.getMessage());
         }
         return null;
     }
@@ -104,10 +103,12 @@ public class FilesLibraryService implements LocalLibraryService {
             if (previousStep < currentStep) {
                 previousStep = currentStep;
                 int pourcentage = (currentStep * 100) / BAR_SIZE;
-                System.out.print(
+                if(Params.logger.isDebugEnabled()){
+                    System.out.print(
                         StringUtils.rightPad("\r[", currentStep + 1, "=") +
                         StringUtils.leftPad("]", BAR_SIZE + 1 - currentStep, " ") +
                         " " + pourcentage + "% ");
+                }
             }
         }
 

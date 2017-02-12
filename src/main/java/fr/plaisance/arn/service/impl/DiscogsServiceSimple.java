@@ -3,6 +3,7 @@ package fr.plaisance.arn.service.impl;
 import fr.plaisance.arn.bean.DiscogsQuery;
 import fr.plaisance.arn.bean.DiscogsQuery.DiscogsArtist;
 import fr.plaisance.arn.bean.DiscogsReleases;
+import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Model;
@@ -29,11 +30,11 @@ public class DiscogsServiceSimple implements DiscogsService {
 
 	@Override
 	public Artist find(String name) {
-        System.out.println(String.format("Searching missing albums for artist '%s'", name));
+        Params.logger.debug(String.format("Searching missing albums for artist '%s'", name));
 		Artist artist = Model.newArtist(name);
 		DiscogsQuery query = this.query(name);
 		if (CollectionUtils.isNotEmpty(query.getArtists())) {
-            System.out.println(String.format("Artist '%s' found in database", name));
+            Params.logger.trace(String.format("Artist '%s' found in database", name));
             DiscogsReleases releases = this.releases(query.getArtists().get(0));
 			Set<Album> albums = releases
 				.getAlbums()
@@ -44,13 +45,13 @@ public class DiscogsServiceSimple implements DiscogsService {
 			artist.setAlbums(new TreeSet<>(albums));
 		}
 		else {
-            System.out.println(String.format("Artist '%s' not found!", name));
+            Params.logger.trace(String.format("Artist '%s' not found!", name));
         }
 		return artist;
 	}
 
 	private DiscogsQuery query(String artistName) {
-		System.out.println(String.format("Search database for artist '%s'", artistName));
+		Params.logger.trace(String.format("Search database for artist '%s'", artistName));
 		return ClientBuilder.newClient()
 			.target("https://api.discogs.com")
 			.path("database/search")
@@ -65,7 +66,7 @@ public class DiscogsServiceSimple implements DiscogsService {
 	}
 
 	private DiscogsReleases releases(DiscogsArtist artist) {
-		System.out.println(String.format("Fetch releases at URL [%s]", artist.getResourceUrl()));
+		Params.logger.trace(String.format("Fetch releases at URL [%s]", artist.getResourceUrl()));
 		Client client = ClientBuilder.newClient();
 		return client
 			.target(artist.getResourceUrl())
