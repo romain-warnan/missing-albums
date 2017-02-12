@@ -3,6 +3,7 @@ package fr.plaisance.arn.main;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.CommaParameterSplitter;
 import fr.plaisance.arn.model.Artist;
+import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,15 +24,27 @@ public class Params {
         return instance;
     }
 
+    public static final Logger logger = Logger.getLogger("fr.plaisance");
+
     @Parameter(names = {"-a", "--artists"}, converter = ArtistConverter.class, splitter = CommaParameterSplitter.class, description =
         "Comma separated liste of artist's names you are interrested in. " +
         "Example: --artists \"Amon Amarth,Bjork\"")
     public List<Artist> artists;
 
+    @Parameter(names = {"-q", "--quiet"}, description =
+        "Hide log messages. Only the final result is shown." +
+        "Example: --quiet")
+    public Boolean quiet = false;
+
+    @Parameter(names = {"-v", "--verbose"}, description =
+        "Show detail log messages." +
+        "Example: --verbose")
+    public Boolean verbose = false;
+
     @Parameter(names = {"-s", "--skip-siblings"}, description =
-         "If this flag is set, the program will assume that one folder contains only songs of the same album. " +
-         "This is much faster so it is suggested that you put your music library in order and use this option. " +
-         "Example: --skipSiblings")
+        "If this flag is set, the program will assume that one folder contains only songs of the same album. " +
+        "This is much faster so it is suggested that you put your music library in order and use this option. " +
+        "Example: --skipSiblings")
     public Boolean skipSiblings = false;
 
     @Parameter(names = {"-y", "--year"}, description =
