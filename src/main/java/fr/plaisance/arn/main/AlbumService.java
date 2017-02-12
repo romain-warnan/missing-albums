@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,24 +24,24 @@ public class AlbumService {
     private RemoteLibraryService remoteLibraryService;
 
     // TODO String genre
-    public Set<Album> findMissingAlbums(List<Artist> artists, String year, Path path) {
-        Set<Album> missingAlbums = new LinkedHashSet<>();
-
+    public Map<Artist, SortedSet<Album>> findMissingAlbums(List<Artist> artists, String year, Path path) {
+        HashMap<Artist, SortedSet<Album>> map = new HashMap<>();
         Library localLibrary = filter(localLibraryService.library(path), artists);
         Library remoteLibrary = remoteLibraryService.library(localLibrary);
 
         for (Artist remoteArtist : remoteLibrary.getArtists()) {
             Optional<Artist> localArtist = Model.find(localLibrary, remoteArtist.getName());
             if(localArtist.isPresent()){
-                Set<Album> albums = Model.missingAlbums(localArtist.get(), remoteArtist);
+                SortedSet<Album> albums = new TreeSet<>(Model.missingAlbums(localArtist.get(), remoteArtist));
                 if(CollectionUtils.isNotEmpty(albums)){
-                    missingAlbums.addAll(albums.stream()
+                    albums = albums.stream()
                             .filter(a -> a.isAfter(year))
-                            .collect(Collectors.toSet()));
+                            .collect(Collectors.toCollection(TreeSet::new));
+                    map.put(remoteArtist, albums);
                 }
             }
         }
-        return missingAlbums;
+        return map;
     }
 
     private static Library filter(Library library, List<Artist> artists) {

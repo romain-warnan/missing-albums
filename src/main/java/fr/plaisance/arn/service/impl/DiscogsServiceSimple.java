@@ -33,7 +33,8 @@ public class DiscogsServiceSimple implements DiscogsService {
 		Artist artist = Model.newArtist(name);
 		DiscogsQuery query = this.query(name);
 		if (CollectionUtils.isNotEmpty(query.getArtists())) {
-			DiscogsReleases releases = this.releases(query.getArtists().get(0));
+            System.out.println(String.format("Artist '%s' found in database", name));
+            DiscogsReleases releases = this.releases(query.getArtists().get(0));
 			Set<Album> albums = releases
 				.getAlbums()
 				.stream()
@@ -42,13 +43,15 @@ public class DiscogsServiceSimple implements DiscogsService {
 				.collect(Collectors.toSet());
 			artist.setAlbums(new TreeSet<>(albums));
 		}
+		else {
+            System.out.println(String.format("Artist '%s' not found!", name));
+        }
 		return artist;
 	}
 
 	private DiscogsQuery query(String artistName) {
 		System.out.println(String.format("Search database for artist '%s'", artistName));
-		Client client = ClientBuilder.newClient();
-		return client
+		return ClientBuilder.newClient()
 			.target("https://api.discogs.com")
 			.path("database/search")
 			.queryParam("q", artistName)

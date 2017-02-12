@@ -11,3 +11,4 @@ src/main/resources/discogs.properties
 .classpath
 .project
 .tern-project
+*.jar
