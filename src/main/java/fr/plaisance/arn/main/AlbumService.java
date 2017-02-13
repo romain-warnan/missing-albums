@@ -7,6 +7,7 @@ import fr.plaisance.arn.model.Model;
 import fr.plaisance.arn.service.LocalLibraryService;
 import fr.plaisance.arn.service.RemoteLibraryService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +24,16 @@ public class AlbumService {
     @Autowired
     private RemoteLibraryService remoteLibraryService;
 
-    // TODO String genre
-    public Map<Artist, SortedSet<Album>> findMissingAlbums(List<Artist> artists, String year, Path path) {
+    public Map<Artist, SortedSet<Album>> findMissingAlbums(List<Artist> artists, String genre, String year, Path path) {
         HashMap<Artist, SortedSet<Album>> map = new HashMap<>();
-        Library localLibrary = filter(localLibraryService.library(path), artists);
+        Library localLibrary = filter(localLibraryService.library(path), artists, genre);
         Library remoteLibrary = remoteLibraryService.library(localLibrary);
 
         for (Artist remoteArtist : remoteLibrary.getArtists()) {
             Optional<Artist> localArtist = Model.find(localLibrary, remoteArtist.getName());
-            if(localArtist.isPresent()){
+            if (localArtist.isPresent()) {
                 SortedSet<Album> albums = new TreeSet<>(Model.missingAlbums(localArtist.get(), remoteArtist));
-                if(CollectionUtils.isNotEmpty(albums)){
+                if (CollectionUtils.isNotEmpty(albums)) {
                     albums = albums.stream()
                             .filter(a -> a.isAfter(year))
                             .collect(Collectors.toCollection(TreeSet::new));
@@ -44,15 +44,25 @@ public class AlbumService {
         return map;
     }
 
-    private static Library filter(Library library, List<Artist> artists) {
-        if(CollectionUtils.isEmpty(artists)){
+    private static Library filter(Library library, List<Artist> artists, String genre) {
+        if (CollectionUtils.isEmpty(artists) && StringUtils.isBlank(genre)) {
             return library;
         }
         Library filteredLibrary = new Library();
         filteredLibrary.setArtists(library.getArtists()
                 .stream()
-                .filter(artists::contains)
+                .filter(artist -> matches(artist, artists, genre))
                 .collect(Collectors.toSet()));
         return filteredLibrary;
+    }
+
+    private static boolean matches(Artist artist, List<Artist> artists, String genre) {
+        if (CollectionUtils.isEmpty(artists)) {
+            if (StringUtils.isBlank(genre)) {
+                return true;
+            }
+            return StringUtils.equalsIgnoreCase(genre, artist.getGenre());
+        }
+        return artists.contains(artist) || StringUtils.equalsIgnoreCase(genre, artist.getGenre());
     }
 }

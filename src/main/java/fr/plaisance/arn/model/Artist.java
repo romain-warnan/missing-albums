@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 public class Artist implements Comparable<Artist> {
 
-    private String name;
+    private String name, genre;
     private SortedSet<Album> albums = new TreeSet<>();
 
     public String getName() {
@@ -18,6 +18,14 @@ public class Artist implements Comparable<Artist> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public SortedSet<Album> getAlbums() {

@@ -23,7 +23,9 @@ public class ID3v1TagService implements TagService {
 
 	@Override
 	public Artist artist(ID3V1Tag tag) {
-		return Model.newArtist(StringUtils.trim(tag.getArtist()));
+		Artist artist = Model.newArtist(StringUtils.trim(tag.getArtist()));
+		artist.setGenre(StringUtils.trim(tag.getGenre().toString()));
+		return artist;
 	}
 
 	@Override

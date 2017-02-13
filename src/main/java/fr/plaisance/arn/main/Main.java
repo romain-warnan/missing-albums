@@ -20,20 +20,18 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 
-    // TODO String genre
     public static void main(String[] args) {
         Params params = beforeRunning(args);
 
         try(AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")){
             AlbumService albumService = context.getBean("albumService", AlbumService.class);
 
-            Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.year, params.path);
+            Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
             map.forEach((artist, albums) -> {
                 Params.logger.info(artist.getName());
                 albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
             });
         }
-
     }
 
     private static Params beforeRunning(String[] args){

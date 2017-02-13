@@ -52,6 +52,12 @@ public class Params {
         "Example: --year 2015")
     public String year = null;
 
+    // TODO Regex
+    @Parameter(names = {"-g", "--genre"}, description =
+        "Search missing albums for all artists of the specified genre. " +
+        "Example: --genre Metal")
+    public String genre = null;
+
     @Parameter(names = {"-h", "--help"}, help = true, description =
         "Display this message. " +
         "Example: --help")
