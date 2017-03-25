@@ -19,7 +19,9 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-
+    // TODO 1. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 2. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
+    // TODO 3. Lire la liste d'artistes à partir d'un fichier texte
     public static void main(String[] args) {
         Params params = beforeRunning(args);
 
