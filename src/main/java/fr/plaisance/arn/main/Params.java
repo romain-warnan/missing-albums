@@ -58,7 +58,7 @@ public class Params {
     @Parameter(names = {"-y", "--year"}, description =
         "Missing albums will not be displayed if they were released before this year. " +
         "Example: --year 2015")
-    public String year = null;
+    public String year = "1900";
 
     // TODO Regex
     @Parameter(names = {"-g", "--genre"}, description =

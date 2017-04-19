@@ -10,6 +10,10 @@ import fr.plaisance.arn.model.Model;
 import fr.plaisance.arn.service.DiscogsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.HttpHeaders;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,11 +90,35 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.get(DiscogsReleases.class);
 	}
 
+    // TODO 1. Ne récupérer que les albums à l'aide d'une option (instable, ne passe pas par le WS discocgs)
+    // https://www.discogs.com/artist/18666-Mike-Oldfield?sort=year%2Cdesc&limit=500&subtype=Albums&layout=med&filter_anv=0&type=Releases
+    // cf. row.html, lignes <td class="title" et <td class="year
+    // Utiliser Jsoup pour de meilleurs résultats
 	private DiscogsReleases onlyAlbums(DiscogsArtist artist) {
 		Params.logger.trace(String.format("Fetch only albums releases at URL [%s]", artist.getResourceUrl()));
-
-		// TODO à implémenter avec Jsoup
-		return this.allReleases(artist);
+        DiscogsReleases releases = new DiscogsReleases();
+        List<DiscogsReleases.DiscogsAlbum> albums = new ArrayList<>();
+        try {
+            Document document = Jsoup.connect("http://www.discogs.com/" + artist.getUri() + "?sort=year%2Cdesc&limit=500&subtype=Albums&layout=med&filter_anv=0&type=Releases").get();
+            Elements elements = document.select("tr.master");
+            if (CollectionUtils.isNotEmpty(elements)){
+                for (Element element : elements) {
+                    DiscogsReleases.DiscogsAlbum album = new DiscogsReleases.DiscogsAlbum();
+                    String title = element.select("td.title").get(0).text();
+                    String year = element.select("td.year").get(0).text();
+                    album.setTitle(title);
+                    album.setYear(Integer.valueOf(year));
+                    album.setType("master");
+                    albums.add(album);
+                }
+            }
+            releases.setAlbums(albums);
+        }
+        catch (Exception e) {
+            Params.logger.trace(e.getMessage());
+            releases.setAlbums(Collections.emptyList());
+        }
+		return releases;
 	}
 
 	private String version() {

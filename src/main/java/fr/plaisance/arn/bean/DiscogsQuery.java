@@ -22,12 +22,23 @@ public class DiscogsQuery {
 		@JsonProperty("resource_url")
 		private String resourceUrl;
 
+		@JsonProperty("uri")
+		private String uri;
+
 		public String getResourceUrl() {
 			return resourceUrl;
 		}
 
 		public void setResourceUrl(String resourceUrl) {
 			this.resourceUrl = resourceUrl;
+		}
+
+		public String getUri() {
+			return uri;
+		}
+
+		public void setUri(String uri) {
+			this.uri = uri;
 		}
 	}
 }
