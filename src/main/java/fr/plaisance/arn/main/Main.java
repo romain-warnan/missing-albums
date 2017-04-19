@@ -19,9 +19,13 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    // TODO 1. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 1. Ne récupérer que les albums à l'aide d'une option (instable, ne passe pas par le WS discocgs)
+    // https://www.discogs.com/artist/18666-Mike-Oldfield?sort=year%2Cdesc&limit=500&subtype=Albums&layout=med&filter_anv=0&type=Releases
+    // cf. row.html, lignes <td class="title" et <td class="year
+    // Utiliser Jsoup pour de meilleurs résultats
     // TODO 2. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
     // TODO 3. Lire la liste d'artistes à partir d'un fichier texte
+    // TODO 4. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = beforeRunning(args);
 

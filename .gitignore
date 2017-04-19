@@ -1,14 +1,8 @@
 target/
-.externalToolBuilders/
 .settings/
-.sass-cache/
 .idea/
-src/main/webapp/WEB-INF/lib/
 src/test/
 
 src/main/resources/discogs.properties
 *.iml
-.classpath
-.project
-.tern-project
 *.jar
