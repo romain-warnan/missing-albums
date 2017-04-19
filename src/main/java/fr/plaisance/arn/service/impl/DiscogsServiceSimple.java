@@ -65,8 +65,15 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.get(DiscogsQuery.class);
 	}
 
-	private DiscogsReleases releases(DiscogsArtist artist) {
-		Params.logger.trace(String.format("Fetch releases at URL [%s]", artist.getResourceUrl()));
+	private DiscogsReleases releases(DiscogsArtist artist){
+		if(Params.getInstance().onlyAlbums){
+			return this.onlyAlbums(artist);
+		}
+		return this.allReleases(artist);
+	}
+
+	private DiscogsReleases allReleases(DiscogsArtist artist) {
+		Params.logger.trace(String.format("Fetch all releases at URL [%s]", artist.getResourceUrl()));
 		Client client = ClientBuilder.newClient();
 		return client
 			.target(artist.getResourceUrl())
@@ -79,6 +86,13 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.header(HttpHeaders.ACCEPT, this.version())
 			.header(HttpHeaders.AUTHORIZATION, this.authorization())
 			.get(DiscogsReleases.class);
+	}
+
+	private DiscogsReleases onlyAlbums(DiscogsArtist artist) {
+		Params.logger.trace(String.format("Fetch only albums releases at URL [%s]", artist.getResourceUrl()));
+
+		// TODO à implémenter avec Jsoup
+		return this.allReleases(artist);
 	}
 
 	private String version() {
