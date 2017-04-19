@@ -44,8 +44,16 @@ public class Params {
     @Parameter(names = {"-s", "--skip-siblings"}, description =
         "If this flag is set, the program will assume that one folder contains only songs of the same album. " +
         "This is much faster so it is suggested that you put your music library in order and use this option. " +
-        "Example: --skipSiblings")
+        "Example: --skip-siblings")
     public Boolean skipSiblings = false;
+
+    @Parameter(names = {"-o", "--only-albums"}, description =
+        "If this flag is set, the program will only return releases that are albums. " +
+        "This is very convenient to limit the number of results. " +
+        "But it rely on HTML parsing and not on the discogs webservice because the API does not allow to search for album only. " +
+        "For this reason, this function might be broken at some point." +
+        "Example: --only-albums")
+    public Boolean onlyAlbums = false;
 
     @Parameter(names = {"-y", "--year"}, description =
         "Missing albums will not be displayed if they were released before this year. " +

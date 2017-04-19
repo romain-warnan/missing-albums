@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         Params params = beforeRunning(args);
 
-        try(AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")){
+        try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")) {
             AlbumService albumService = context.getBean("albumService", AlbumService.class);
 
             Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
@@ -40,31 +40,31 @@ public class Main {
         }
     }
 
-    private static Params beforeRunning(String[] args){
+    private static Params beforeRunning(String[] args) {
         Params params = Params.getInstance();
         JCommander commander = new JCommander(params, args);
         commander.setProgramName("Album release notifier");
 
-        if(params.help){
+        if (params.help) {
             commander.usage();
             System.exit(0);
         }
 
-        if(params.quiet){
+        if (params.quiet) {
             Params.logger.setLevel(Level.INFO);
         }
 
-        if(params.verbose){
+        if (params.verbose) {
             Params.logger.setLevel(Level.TRACE);
         }
 
-        if(CollectionUtils.isNotEmpty(params.artists)) {
+        if (CollectionUtils.isNotEmpty(params.artists)) {
             Params.logger.debug(String.format("Detected artists: %s",
                     params.artists.stream().map(Artist::getName).collect(Collectors.joining(", "))));
         }
 
-        if(StringUtils.isNotBlank(params.year)) {
-            Params.logger.debug(String.format("Searching for missing albums after year %s",params.year));
+        if (StringUtils.isNotBlank(params.year)) {
+            Params.logger.debug(String.format("Searching for missing albums after year %s", params.year));
         }
 
         return params;
