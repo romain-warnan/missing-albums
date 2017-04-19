@@ -101,6 +101,7 @@ public class DiscogsServiceSimple implements DiscogsService {
         try {
             Document document = Jsoup.connect("http://www.discogs.com/" + artist.getUri() + "?sort=year%2Cdesc&limit=500&subtype=Albums&layout=med&filter_anv=0&type=Releases").get();
             Elements elements = document.select("tr.master");
+            // TODO Java 8 stream !
             if (CollectionUtils.isNotEmpty(elements)){
                 for (Element element : elements) {
                     DiscogsReleases.DiscogsAlbum album = new DiscogsReleases.DiscogsAlbum();
