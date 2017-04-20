@@ -105,8 +105,7 @@ public class DiscogsServiceSimple implements DiscogsService {
             if (CollectionUtils.isNotEmpty(elements)){
                 for (Element element : elements) {
                     DiscogsReleases.DiscogsAlbum album = new DiscogsReleases.DiscogsAlbum();
-                    // TODO : Supprimer la partie du title qui suit la dernière parenthèse ouvrante.
-                    String title = element.select("td.title").get(0).text();
+                    String title = element.select("td.title a").get(0).text();
                     String year = element.select("td.year").get(0).text();
                     album.setTitle(title);
                     album.setYear(Integer.valueOf(year));
