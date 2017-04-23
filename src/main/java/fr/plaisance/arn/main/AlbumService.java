@@ -58,10 +58,7 @@ public class AlbumService {
 
     private static boolean matches(Artist artist, List<Artist> artists, String genre) {
         if (CollectionUtils.isEmpty(artists)) {
-            if (StringUtils.isBlank(genre)) {
-                return true;
-            }
-            return StringUtils.equalsIgnoreCase(genre, artist.getGenre());
+            return StringUtils.isBlank(genre) || StringUtils.equalsIgnoreCase(genre, artist.getGenre());
         }
         return artists.contains(artist) || StringUtils.equalsIgnoreCase(genre, artist.getGenre());
     }

@@ -19,10 +19,9 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    // TODO 1. Ne récupérer que les albums à l'aide d'une option (instable, ne passe pas par le WS discocgs)
-    // TODO 2. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
-    // TODO 3. Lire la liste d'artistes à partir d'un fichier texte
-    // TODO 4. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 1. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
+    // TODO 2. Lire la liste d'artistes à partir d'un fichier texte
+    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = beforeRunning(args);
 

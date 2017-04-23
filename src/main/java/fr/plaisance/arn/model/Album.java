@@ -50,6 +50,9 @@ public class Album implements Comparable<Album> {
 
 	@Override
 	public int compareTo(Album other) {
+		if (Objects.equal(this, other)){
+			return 0;
+		}
 		return ComparisonChain.start().compare(this.year, other.year).result();
 	}
 
