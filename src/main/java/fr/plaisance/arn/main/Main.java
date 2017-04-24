@@ -20,7 +20,7 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     // TODO 1. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
-    // TODO 2. Lire la liste d'artistes à partir d'un fichier texte
+    // TODO 2. Améliorer le format de sortie (fichier texte, colonnes type ls -l, à voir...)
     // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = beforeRunning(args);
@@ -54,9 +54,12 @@ public class Main {
             Params.logger.setLevel(Level.TRACE);
         }
 
-        if (CollectionUtils.isNotEmpty(params.artists)) {
+        if (CollectionUtils.isNotEmpty(params.artists) || CollectionUtils.isNotEmpty(params.artistList)) {
+            params.artists.addAll(params.artistList);
             Params.logger.debug(String.format("Detected artists: %s",
-                    params.artists.stream().map(Artist::getName).collect(Collectors.joining(", "))));
+            params.artists.stream()
+                .map(Artist::getName)
+                .collect(Collectors.joining(", "))));
         }
 
         if (StringUtils.isNotBlank(params.year)) {

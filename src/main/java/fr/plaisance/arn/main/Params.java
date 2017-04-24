@@ -7,7 +7,10 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Params {
 
@@ -27,9 +30,16 @@ public class Params {
     public static final Logger logger = Logger.getLogger("fr.plaisance");
 
     @Parameter(names = {"-a", "--artists"}, converter = ArtistConverter.class, splitter = CommaParameterSplitter.class, description =
-        "Comma separated liste of artist's names you are interrested in. " +
+        "Comma separated list of artists names you are interrested in. " +
         "Example: --artists \"Amon Amarth,Bjork\"")
-    public List<Artist> artists;
+    public List<Artist> artists = new ArrayList<>();
+
+
+    @Parameter(names = {"-l", "--artist-list"}, converter = ArtistsListConverter.class, description =
+        "File that contains a list of artists names you are interrested in. " +
+        "One artist name per line. " +
+        "Example: --artist-list /home/name/artists.txt")
+    public Set<Artist> artistList = new HashSet<>();
 
     @Parameter(names = {"-q", "--quiet"}, description =
         "Hide log messages. Only the final result is shown." +
