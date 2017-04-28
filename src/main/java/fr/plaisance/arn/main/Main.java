@@ -28,6 +28,7 @@ public class Main {
             AlbumService albumService = context.getBean(AlbumService.class);
 
             Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
+
             map.forEach((artist, albums) -> {
                 Params.logger.info(artist.getName());
                 albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
