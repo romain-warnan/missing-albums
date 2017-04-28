@@ -6,8 +6,6 @@ import fr.plaisance.arn.model.Artist;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,16 +15,17 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    // private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     // TODO 1. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
-    // TODO 2. Améliorer le format de sortie (fichier texte, colonnes type ls -l, à voir...)
-    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 2. Améliorer le format de sortie (fichier texte, colonnes type ls -l, à voir…)
+    // TODO 3. Regex dans l'option --genre
+    // TODO 4. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
-        Params params = beforeRunning(args);
+        Params params = handleParams(args);
 
         try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")) {
-            AlbumService albumService = context.getBean("albumService", AlbumService.class);
+            AlbumService albumService = context.getBean(AlbumService.class);
 
             Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
             map.forEach((artist, albums) -> {
@@ -36,7 +35,7 @@ public class Main {
         }
     }
 
-    private static Params beforeRunning(String[] args) {
+    private static Params handleParams(String[] args) {
         Params params = Params.getInstance();
         JCommander commander = new JCommander(params, args);
         commander.setProgramName("Album release notifier");
@@ -57,9 +56,9 @@ public class Main {
         if (CollectionUtils.isNotEmpty(params.artists) || CollectionUtils.isNotEmpty(params.artistList)) {
             params.artists.addAll(params.artistList);
             Params.logger.debug(String.format("Detected artists: %s",
-            params.artists.stream()
-                .map(Artist::getName)
-                .collect(Collectors.joining(", "))));
+                params.artists.stream()
+                    .map(Artist::getName)
+                    .collect(Collectors.joining(", "))));
         }
 
         if (StringUtils.isNotBlank(params.year)) {

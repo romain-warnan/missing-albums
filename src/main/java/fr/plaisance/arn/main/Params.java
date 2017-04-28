@@ -70,7 +70,6 @@ public class Params {
         "Example: --year 2015")
     public String year = "1900";
 
-    // TODO Regex
     @Parameter(names = {"-g", "--genre"}, description =
         "Search missing albums for all artists of the specified genre. " +
         "Example: --genre Metal")
