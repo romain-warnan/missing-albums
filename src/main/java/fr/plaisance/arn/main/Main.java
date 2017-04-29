@@ -3,6 +3,7 @@ package fr.plaisance.arn.main;
 import com.beust.jcommander.JCommander;
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
+import fr.plaisance.arn.printer.AlbumsPrinter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
@@ -29,10 +30,13 @@ public class Main {
 
             Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
 
-            map.forEach((artist, albums) -> {
-                Params.logger.info(artist.getName());
-                albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
-            });
+//            map.forEach((artist, albums) -> {
+//                Params.logger.info(artist.getName());
+//                albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
+//            });
+
+            AlbumsPrinter printer = context.getBean("listPrinter", AlbumsPrinter.class);
+            Params.logger.info(printer.print(map));
         }
     }
 

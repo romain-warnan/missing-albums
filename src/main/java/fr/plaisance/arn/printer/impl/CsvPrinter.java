@@ -18,8 +18,8 @@ public class CsvPrinter implements AlbumsPrinter {
             album -> builder.append(
                 String.format("\"%s\";\"%s\";\"%s\"%n",
                     artist.getName(),
-                    album.getName(),
-                    album.getYear()))));
+                    album.getYear(),
+                    album.getName()))));
         return builder.toString();
     }
 }

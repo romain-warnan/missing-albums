@@ -19,8 +19,8 @@ public class ListPrinter implements AlbumsPrinter {
             album -> builder.append(
                 String.format(format(map),
                     artist.getName(),
-                    album.getName(),
-                    album.getYear()))));
+                    album.getYear(),
+                    album.getName()))));
         return builder.toString();
     }
 
@@ -45,7 +45,7 @@ public class ListPrinter implements AlbumsPrinter {
 
 
     private static String colFormat(int colSize){
-        return "%" + (colSize + 1) + "s";
+        return "%-" + (colSize + 1) + "s";
     }
 
     private static String format(Map<Artist, SortedSet<Album>> map){
@@ -54,7 +54,7 @@ public class ListPrinter implements AlbumsPrinter {
         int yearColSize = 4;
         return String.format("%s%s%s",
             colFormat(artistColSize),
-            colFormat(albumColSize),
-            colFormat(yearColSize));
+            colFormat(yearColSize),
+            colFormat(albumColSize)) + "%n";
     }
 }
