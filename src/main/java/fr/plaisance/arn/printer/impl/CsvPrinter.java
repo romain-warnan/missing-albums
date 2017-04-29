@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.SortedSet;
 
-@Component
+@Component("csvPrinter")
 public class CsvPrinter implements AlbumsPrinter {
 
     @Override
@@ -16,7 +16,7 @@ public class CsvPrinter implements AlbumsPrinter {
         StringBuilder builder = new StringBuilder();
         map.forEach((artist, albums) -> albums.forEach(
             album -> builder.append(
-                String.format("\"%s\";\"%s\";\"%s\"\n",
+                String.format("\"%s\";\"%s\";\"%s\"%n",
                     artist.getName(),
                     album.getName(),
                     album.getYear()))));
