@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.SortedSet;
 
-@Component("csv")
-public class CsvPrinter implements AlbumsPrinter {
+@Component("tsv")
+public class TsvPrinter implements AlbumsPrinter {
 
     @Override
     public String print(Map<Artist, SortedSet<Album>> map) {
         StringBuilder builder = new StringBuilder();
         map.forEach((artist, albums) -> albums.forEach(
             album -> builder.append(
-                String.format("\"%s\";\"%s\";\"%s\"%n",
+                String.format("%s\t%s\t%s%n",
                     artist.getName(),
                     album.getYear(),
                     album.getName()))));

@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.SortedSet;
 
-@Component("listPrinter")
+@Component("list")
 public class ListPrinter implements AlbumsPrinter {
 
     @Override

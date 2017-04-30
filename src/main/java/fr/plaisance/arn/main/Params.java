@@ -75,6 +75,14 @@ public class Params {
         "Example: --genre Metal")
     public String genre = null;
 
+    @Parameter(names = {"-f", "--output-format"}, description =
+        "Format of the output. There are three formats:" +
+        "- csv: comma separated values, " +
+        "- tsv: tabulation separated values, " +
+        "- list: each values is in a column of fixed sized." +
+        "Example: --output-format csv")
+    public String format = "list";
+
     @Parameter(names = {"-h", "--help"}, help = true, description =
         "Display this message. " +
         "Example: --help")

@@ -30,12 +30,7 @@ public class Main {
 
             Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
 
-//            map.forEach((artist, albums) -> {
-//                Params.logger.info(artist.getName());
-//                albums.forEach(album -> Params.logger.info(String.format("* %s - %s", album.getYear(), album.getName())));
-//            });
-
-            AlbumsPrinter printer = context.getBean("listPrinter", AlbumsPrinter.class);
+            AlbumsPrinter printer = context.getBean(Params.getInstance().format, AlbumsPrinter.class);
             Params.logger.info(printer.print(map));
         }
     }
