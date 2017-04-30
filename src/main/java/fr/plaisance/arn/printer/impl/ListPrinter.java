@@ -3,6 +3,7 @@ package fr.plaisance.arn.printer.impl;
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.printer.AlbumsPrinter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -30,7 +31,7 @@ public class ListPrinter implements AlbumsPrinter {
             .flatMap(SortedSet::stream)
             .map(Album::getName)
             .max(Comparator.comparingInt(String::length))
-            .get()
+            .orElse(StringUtils.leftPad(StringUtils.EMPTY, 20))
             .length();
     }
 
@@ -39,7 +40,7 @@ public class ListPrinter implements AlbumsPrinter {
             .stream()
             .map(Artist::getName)
             .max(Comparator.comparingInt(String::length))
-            .get()
+            .orElse(StringUtils.leftPad(StringUtils.EMPTY, 20))
             .length();
     }
 

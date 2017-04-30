@@ -66,9 +66,10 @@ public class Params {
     public Boolean onlyAlbums = false;
 
     @Parameter(names = {"-y", "--year"}, description =
-        "Missing albums will not be displayed if they were released before this year. " +
+        "If set, missing albums will not be displayed if they were released before this year. " +
+        "If not, only missing albums that have been released after the latest one in the library will be displayed. " +
         "Example: --year 2015")
-    public String year = "1900";
+    public String year = null;
 
     @Parameter(names = {"-g", "--genre"}, description =
         "Search missing albums for all artists of the specified genre. " +

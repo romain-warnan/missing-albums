@@ -33,15 +33,28 @@ public class AlbumService {
             Optional<Artist> localArtist = Model.find(localLibrary, remoteArtist.getName());
             if (localArtist.isPresent()) {
                 SortedSet<Album> albums = new TreeSet<>(Model.missingAlbums(localArtist.get(), remoteArtist));
+
+                String fromYear = fromYear(year, albums);
+                Params.logger.info(fromYear);
                 if (CollectionUtils.isNotEmpty(albums)) {
                     albums = albums.stream()
-                            .filter(a -> a.isAfter(year))
-                            .collect(Collectors.toCollection(TreeSet::new));
+                        .filter(a -> a.isAfter(fromYear))
+                        .collect(Collectors.toCollection(TreeSet::new));
                     map.put(remoteArtist, albums);
                 }
             }
         }
         return map;
+    }
+
+    private static String fromYear(String year, SortedSet<Album> albums) {
+        if(StringUtils.isNotBlank(year)){
+            return year;
+        }
+        return albums.stream()
+            .map(Album::getYear)
+            .max(Comparator.naturalOrder())
+            .orElse("0");
     }
 
     private static Library filter(Library library, List<Artist> artists, String genre) {
