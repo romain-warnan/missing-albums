@@ -16,12 +16,9 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    // private static final Logger logger = LoggerFactory.getLogger(Main.class);
-
     // TODO 1. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
-    // TODO 2. Améliorer le format de sortie (fichier texte, colonnes type ls -l, à voir…)
-    // TODO 3. Regex dans l'option --genre
-    // TODO 4. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 2. Regex dans l'option --genre
+    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = handleParams(args);
 
