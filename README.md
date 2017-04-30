@@ -1,4 +1,4 @@
-### Missing album finder
+### Missing albums finder
 
 Helps you find which album you are missing in your library. Based on discogs database.
 
