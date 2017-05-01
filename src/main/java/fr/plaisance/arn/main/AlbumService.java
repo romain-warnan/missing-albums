@@ -33,9 +33,7 @@ public class AlbumService {
             Optional<Artist> localArtist = Model.find(localLibrary, remoteArtist.getName());
             if (localArtist.isPresent()) {
                 SortedSet<Album> albums = new TreeSet<>(Model.missingAlbums(localArtist.get(), remoteArtist));
-
                 String fromYear = fromYear(year, albums);
-                Params.logger.info(fromYear);
                 if (CollectionUtils.isNotEmpty(albums)) {
                     albums = albums.stream()
                         .filter(a -> a.isAfter(fromYear))

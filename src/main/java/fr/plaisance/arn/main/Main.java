@@ -16,19 +16,16 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    // TODO 1. Rechercher uniquement les albums après le dernier en date présent dans la bibliothèque locale
-    // TODO 2. Regex dans l'option --genre
-    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 1. Regex dans l'option --genre
+    // TODO 2. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = handleParams(args);
 
         try (AbstractApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")) {
             AlbumService albumService = context.getBean(AlbumService.class);
-
-            Map<Artist, SortedSet<Album>> map = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
-
+            Map<Artist, SortedSet<Album>> albums = albumService.findMissingAlbums(params.artists, params.genre, params.year, params.path);
             AlbumsPrinter printer = context.getBean(Params.getInstance().format, AlbumsPrinter.class);
-            Params.logger.info(printer.print(map));
+            Params.logger.info(printer.print(albums));
         }
     }
 
