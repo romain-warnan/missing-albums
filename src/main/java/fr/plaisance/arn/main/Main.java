@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 public class Main {
 
     // TODO 1. Regex dans l'option --genre
-    // TODO 2. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 2. Dernier paramètre: path, liste authorisée
+    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = handleParams(args);
 
