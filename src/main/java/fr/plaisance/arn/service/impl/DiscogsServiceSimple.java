@@ -15,12 +15,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,7 +60,7 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.queryParam("q", artistName)
 			.queryParam("type", "artist")
 			.queryParam("per_page", "1")
-			.request(MediaType.APPLICATION_JSON_VALUE)
+			.request(MediaType.APPLICATION_JSON_TYPE)
 			.header(HttpHeaders.USER_AGENT, this.userAgent())
 			.header(HttpHeaders.ACCEPT, this.version())
 			.header(HttpHeaders.AUTHORIZATION, this.authorization())
@@ -83,7 +83,7 @@ public class DiscogsServiceSimple implements DiscogsService {
 			.queryParam("per_page", "100")
 			.queryParam("sort", "year")
 			.queryParam("sort_order", "desc")
-			.request(MediaType.APPLICATION_JSON_VALUE)
+			.request(MediaType.APPLICATION_JSON_TYPE)
 			.header(HttpHeaders.USER_AGENT, this.userAgent())
 			.header(HttpHeaders.ACCEPT, this.version())
 			.header(HttpHeaders.AUTHORIZATION, this.authorization())
