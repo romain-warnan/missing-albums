@@ -17,8 +17,9 @@ import java.util.stream.Collectors;
 public class Main {
 
     // TODO 1. Regex dans l'option --genre
-    // TODO 2. Dernier paramètre: path, liste authorisée
-    // TODO 3. Images de l'artiste à copier dans le dossier de l'artist
+    // TODO 2. Dernier paramètre: path, liste autorisée
+    // TODO 3. Liste d'albums à ignorer dans les résultats (peut provenir d'une précédente sortie)
+    // TODO 4. Images de l'artiste à copier dans le dossier de l'artist
     public static void main(String[] args) {
         Params params = handleParams(args);
 
@@ -33,7 +34,7 @@ public class Main {
     private static Params handleParams(String[] args) {
         Params params = Params.getInstance();
         JCommander commander = new JCommander(params, args);
-        commander.setProgramName("Album release notifier");
+        commander.setProgramName("Missing albums");
 
         if (params.help) {
             commander.usage();
