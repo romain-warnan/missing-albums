@@ -9,14 +9,13 @@ git clone git@github.com:romain-warnan/missing-albums.git
 cd missing-albums
 ./scripts/compile.sh
 ```
+> Note that `mvn` and `java` must be in your `PATH` for the command to run properly.
 
 ## Run
 
 ```bash
 java -jar missing-albums.jar [options]
 ```
-
-> Note that `mvn` and `java` must be in your `PATH` for the command to run properly.
 
 ## Options
 
