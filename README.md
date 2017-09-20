@@ -1,6 +1,6 @@
 # Missing albums finder
 
-Helps you find which album you are missing in your library. Based on discogs database.
+Helps you find which album you are missing in your library. Based on musicbrainz database.
 
 ## Install
 
