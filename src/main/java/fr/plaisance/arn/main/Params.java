@@ -76,6 +76,11 @@ public class Params {
         "Example: --genre Metal")
     public String genre = null;
 
+    @Parameter(names = {"-x", "--proxy"}, description =
+        "If your network uses a proxy to connect to the internet, the uri of the proxy server. " +
+        "Example: --proxy http://123.15.12.1:8081, --proxy http://proxy.my-company.com:8080")
+    public String proxy = null;
+
     @Parameter(names = {"-f", "--output-format"}, description =
         "Format of the output. There are three formats:" +
         "- csv: comma separated values, " +
