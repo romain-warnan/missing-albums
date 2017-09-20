@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import java.util.UUID;
 
 @XmlRootElement(name = "metadata", namespace = "http://musicbrainz.org/ns/mmd-2.0#")
 public class MusicBrainzReleases {
@@ -22,7 +23,6 @@ public class MusicBrainzReleases {
     public static class MusicBrainzReleaseGroupList {
 
         private List<MusicBrainzReleaseGroup> releases;
-        private Integer count;
 
         @XmlElement(name = "release-group")
         public List<MusicBrainzReleaseGroup> getReleases() {
@@ -33,26 +33,17 @@ public class MusicBrainzReleases {
             this.releases = releases;
         }
 
-        @XmlAttribute(name = "count")
-        public Integer getCount() {
-            return count;
-        }
-
-        public void setCount(Integer count) {
-            this.count = count;
-        }
-
         public static class MusicBrainzReleaseGroup {
 
-            private String id, title;
+            private UUID id;
             private Integer score;
 
             @XmlAttribute(name = "id")
-            public String getId() {
+            public UUID getId() {
                 return id;
             }
 
-            public void setId(String id) {
+            public void setId(UUID id) {
                 this.id = id;
             }
 
@@ -63,15 +54,6 @@ public class MusicBrainzReleases {
 
             public void setScore(Integer score) {
                 this.score = score;
-            }
-
-            @XmlElement(name = "title")
-            public String getTitle() {
-                return title;
-            }
-
-            public void setTitle(String title) {
-                this.title = title;
             }
         }
     }

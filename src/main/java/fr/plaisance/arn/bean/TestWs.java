@@ -8,6 +8,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TestWs {
 
@@ -15,13 +17,22 @@ public class TestWs {
     private static final String QUERY = "artist:\"%s\" AND status:official AND primarytype:album NOT secondarytype:[* TO *]";
 
     public static void main(String[] args) {
+
+        // Création client
         ClientConfig config = new ClientConfig();
         config.connectorProvider(new ApacheConnectorProvider());
         config.property(ClientProperties.PROXY_URI, "http://proxy-rie.http.insee.fr:8080");
-
-
         Client client = ClientBuilder.newClient(config);
-        List<MusicBrainzReleases.MusicBrainzReleaseGroupList.MusicBrainzReleaseGroup> releases = client.target(HOST)
+//
+//        for (String l :
+//                Collections.list(LogManager.getLogManager().getLoggerNames())) {
+//            if (l.startsWith("com.sun.jersey")) {
+//                Logger.getLogger(l).setLevel(Level.OFF);
+//            }
+//        }
+
+        // Liste des identifiants de releases
+        List<UUID> releases = client.target(HOST)
                 .path("/ws/2/")
                 .path("release-group")
                 .queryParam("limit", 100)
@@ -29,10 +40,23 @@ public class TestWs {
                 .request(MediaType.APPLICATION_XML)
                 .get(MusicBrainzReleases.class)
                 .getList()
-                .getReleases();
-        releases.stream()
+                .getReleases()
+                .stream()
                 .filter(release -> release.getScore() > 90)
-                .forEach(release -> System.out.println(release.getId()));
+                .map(release -> release.getId())
+                .collect(Collectors.toList());
+
+        releases.stream()
+                .forEach(release -> {
+                    MusicBrainzAlbum.MusicBrainzReleaseGroup album = client.target(HOST)
+                            .path("/ws/2/")
+                            .path("release-group")
+                            .path(release.toString())
+                            .request(MediaType.APPLICATION_XML)
+                            .get(MusicBrainzAlbum.class)
+                            .getAlbum();
+                    System.out.println("album = " + album.getYear() + ": " + album.getTitle());
+                });
 
     }
 }
