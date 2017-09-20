@@ -27,12 +27,6 @@ java -jar missing-albums.jar [options]
  
  - `-g`, `--genre` — Search missing albums for all artists of the specified genre.  
  Example: `--genre Metal`
- 
- - `-o`, `--only-albums` — If this flag is set, the program will only return releases that are albums.
- This is very convenient to limit the number of results.
- But it relies on HTML parsing and not on the discogs webservice because the API does not allow to search for album only.
- For this reason, this function might be broken at some point.  
- Example: `--only-albums`
    
  - `-f`, `--output-format` — Format of the output. There are three formats:
     - csv: comma separated values,

@@ -12,6 +12,7 @@
 			<property name="locations">
 			<list>
 				<value>classpath*:discogs.properties</value>
+				<value>classpath*:proxy.properties</value>
 			</list>
 		</property>
 	</bean>

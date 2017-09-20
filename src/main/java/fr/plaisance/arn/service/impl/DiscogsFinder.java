@@ -7,7 +7,7 @@ import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Album;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Model;
-import fr.plaisance.arn.service.DiscogsService;
+import fr.plaisance.arn.service.ArtistFinder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -24,8 +23,8 @@ import javax.ws.rs.core.MediaType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
-public class DiscogsServiceSimple implements DiscogsService {
+// @Service
+public class DiscogsFinder implements ArtistFinder {
 
 	@Autowired
 	private Properties properties;
@@ -68,9 +67,6 @@ public class DiscogsServiceSimple implements DiscogsService {
 	}
 
 	private DiscogsReleases releases(DiscogsArtist artist){
-		if(Params.getInstance().onlyAlbums){
-			return this.onlyAlbums(artist);
-		}
 		return this.allReleases(artist);
 	}
 
