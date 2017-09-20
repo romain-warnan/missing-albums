@@ -54,6 +54,9 @@ java -jar missing-albums.jar [options]
  - `-y`, `--year` — Missing albums will not be displayed if they were released before this year.  
  Example: `--year 2015`
 
+ - `-x`, `--proxy` — If your network uses a proxy to connect to the internet, the uri of the proxy server.
+ Example:` --proxy http://123.15.12.1:8081`, `--proxy http://proxy.my-company.com:8080`  
+
  - `-p`, `--path` — The folder in which the program will recursively search for audio files.
  If the path is not specified, the program will search in the current directory.  
  Examples: `--path /mnt/audio/music`, `--path "D:\Mes Documents\Music"`  
