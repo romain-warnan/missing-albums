@@ -8,6 +8,7 @@ import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Model;
 import fr.plaisance.arn.service.ArtistFinder;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
@@ -34,10 +35,12 @@ public class MusicBrainzFinder implements ArtistFinder {
 
 	@PostConstruct
     private void postConstruct() {
-        ClientConfig config = new ClientConfig();
-        config.connectorProvider(new ApacheConnectorProvider());
-        config.property(ClientProperties.PROXY_URI, properties.getProperty("proxy"));
-        client = ClientBuilder.newClient(config);
+		ClientConfig config = new ClientConfig();
+		if(StringUtils.isNotBlank(Params.getInstance().proxy)) {
+			config.connectorProvider(new ApacheConnectorProvider());
+			config.property(ClientProperties.PROXY_URI, properties.getProperty("proxy"));
+		}
+		client = ClientBuilder.newClient(config);
     }
 
 	@Override
