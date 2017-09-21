@@ -1,4 +1,4 @@
-# Missing albums finder
+# Missing albums
 
 Helps you find which album you are missing in your library. Based on musicbrainz database.
 

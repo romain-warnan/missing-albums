@@ -5,11 +5,10 @@
 >
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.plaisance</groupId>
-    <artifactId>album-release-notification</artifactId>
+    <artifactId>missing-albums</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>Album release notification</name>
-    <description>Album release notification</description>
+    <name>Missing albums</name>
     <properties>
         <spring.version>4.1.6.RELEASE</spring.version>
         <jersey.version>2.22.2</jersey.version>
@@ -153,16 +152,6 @@
             <artifactId>assertj-core</artifactId>
             <version>3.2.0</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.connectors</groupId>
-            <artifactId>jersey-apache-connector</artifactId>
-            <version>2.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.connectors</groupId>
-            <artifactId>jersey-apache-connector</artifactId>
-            <version>2.13</version>
         </dependency>
     </dependencies>
     <build>
