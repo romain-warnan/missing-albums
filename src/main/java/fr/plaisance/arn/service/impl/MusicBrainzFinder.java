@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,22 +26,31 @@ import java.util.stream.Collectors;
 @Service
 public class MusicBrainzFinder implements ArtistFinder {
 
-    private static final String HOST = "https://musicbrainz.org";
-    private static final String QUERY = "artist:\"%s\" AND status:official AND primarytype:album NOT secondarytype:[* TO *]";
+    private static String HOST, QUERY, USER_AGENT;
+	private static Client client;
 
 	@Autowired
 	private Properties properties;
 
-	private static Client client;
-
 	@PostConstruct
     private void postConstruct() {
-		ClientConfig config = new ClientConfig();
-		if(StringUtils.isNotBlank(Params.getInstance().proxy)) {
-			config.connectorProvider(new ApacheConnectorProvider());
-			config.property(ClientProperties.PROXY_URI, properties.getProperty("proxy"));
-		}
-		client = ClientBuilder.newClient(config);
+	    this.retrieveProperties();
+        this.configureClient();
+    }
+
+    private void configureClient() {
+        ClientConfig config = new ClientConfig();
+        if(StringUtils.isNotBlank(Params.getInstance().proxy)) {
+            config.connectorProvider(new ApacheConnectorProvider());
+            config.property(ClientProperties.PROXY_URI, Params.getInstance().proxy);
+        }
+        client = ClientBuilder.newClient(config);
+    }
+
+    private void retrieveProperties() {
+	    HOST = properties.getProperty("musicbrainz.host");
+	    QUERY = properties.getProperty("albums.query");
+	    USER_AGENT = properties.getProperty("user.agent");
     }
 
 	@Override
@@ -70,6 +80,7 @@ public class MusicBrainzFinder implements ArtistFinder {
                 .queryParam("limit", 100)
                 .queryParam("query", String.format(QUERY, artistName))
                 .request(MediaType.APPLICATION_XML)
+                .header(HttpHeaders.USER_AGENT, USER_AGENT)
                 .get(MusicBrainzReleases.class)
                 .getList()
                 .getReleases()
@@ -85,6 +96,7 @@ public class MusicBrainzFinder implements ArtistFinder {
                 .path("release-group")
                 .path(release.toString())
                 .request(MediaType.APPLICATION_XML)
+                .header(HttpHeaders.USER_AGENT, USER_AGENT)
                 .get(MusicBrainzAlbum.class)
                 .getAlbum();
     }

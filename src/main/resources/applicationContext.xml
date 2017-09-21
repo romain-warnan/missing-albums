@@ -11,7 +11,7 @@
       class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 			<property name="locations">
 			<list>
-				<value>classpath*:proxy.properties</value>
+				<value>classpath*:missing-albums.properties</value>
 			</list>
 		</property>
 	</bean>
