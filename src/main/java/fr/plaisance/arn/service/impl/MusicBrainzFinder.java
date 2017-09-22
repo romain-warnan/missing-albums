@@ -21,6 +21,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,10 +30,14 @@ public class MusicBrainzFinder implements ArtistFinder {
     private static String HOST, QUERY, USER_AGENT;
 	private static Client client;
 
-	@Autowired
-	private Properties properties;
+	private final Properties properties;
 
-	@PostConstruct
+    @Autowired
+    public MusicBrainzFinder(Properties properties) {
+        this.properties = properties;
+    }
+
+    @PostConstruct
     private void postConstruct() {
 	    this.retrieveProperties();
         this.configureClient();
@@ -74,6 +79,7 @@ public class MusicBrainzFinder implements ArtistFinder {
 	}
 
 	private List<UUID> releases(String artistName) {
+	    this.sleep();
         return client.target(HOST)
                 .path("ws/2")
                 .path("release-group")
@@ -91,6 +97,7 @@ public class MusicBrainzFinder implements ArtistFinder {
 	}
 
 	private MusicBrainzAlbum.MusicBrainzReleaseGroup album(UUID release) {
+        this.sleep();
         return client.target(HOST)
                 .path("ws/2")
                 .path("release-group")
@@ -99,5 +106,14 @@ public class MusicBrainzFinder implements ArtistFinder {
                 .header(HttpHeaders.USER_AGENT, USER_AGENT)
                 .get(MusicBrainzAlbum.class)
                 .getAlbum();
+    }
+
+    private void sleep() {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
