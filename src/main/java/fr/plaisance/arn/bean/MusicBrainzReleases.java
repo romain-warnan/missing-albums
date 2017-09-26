@@ -2,11 +2,9 @@ package fr.plaisance.arn.bean;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.UUID;
 
-@XmlRootElement(name = "metadata", namespace = "http://musicbrainz.org/ns/mmd-2.0#")
 public class MusicBrainzReleases {
 
     private MusicBrainzReleaseGroupList groupList;
