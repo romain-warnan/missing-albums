@@ -70,6 +70,8 @@ public class MusicBrainzFinder implements ArtistFinder {
     }
 
     private MusicBrainzArtist artist(ArtistCredit artistCredit) {
+        this.sleep();
+        Params.logger.info(String.format("Fetching releases for artist '%s'", artistCredit.getArtist().getName()));
         return client.target(HOST)
                 .path("ws/2")
                 .path("artist")
