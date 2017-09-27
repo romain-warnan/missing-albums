@@ -4,6 +4,7 @@ import fr.plaisance.arn.bean.MusicBrainzAlbum;
 import fr.plaisance.arn.bean.MusicBrainzReleases;
 import fr.plaisance.arn.bean2.ArtistCredit;
 import fr.plaisance.arn.bean2.MusicBrainzArtist;
+import fr.plaisance.arn.bean2.ReleaseGroup;
 import fr.plaisance.arn.bean2.ReleaseGroups;
 import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Artist;
@@ -73,10 +74,13 @@ public class MusicBrainzFinder implements ArtistFinder {
 
     @Override
     public Artist find(String name) {
-        // Nouvelle approche
-        ReleaseGroups releaseGroups = this.releaseGroups(name);
+        List<ReleaseGroup> releaseGroups = this.releaseGroups(name)
+                .getReleaseGroups()
+                .stream()
+                .filter(release -> release.getScore() > 90)
+                .collect(Collectors.toList());
 
-        Optional<Optional<MusicBrainzArtist>> musicBrainzArtist = releaseGroups.getReleaseGroups()
+        Optional<Optional<MusicBrainzArtist>> musicBrainzArtist = releaseGroups
                 .stream()
                 .filter(group -> group.getScore() >= 90)
                 .findFirst()
@@ -90,25 +94,10 @@ public class MusicBrainzFinder implements ArtistFinder {
                 a -> a.ifPresent(
                         b -> artist.setAlbums(b.getReleaseGroups()
                                 .stream()
-                                .filter(releaseGroup -> releaseGroups.getReleaseGroups().contains(releaseGroup))
+                                .filter(releaseGroup -> releaseGroups.contains(releaseGroup))
                                 .map(r -> Model.newAlbum(r.getTitle(), r.getReleaseDate()))
                                 .collect(Collectors.toCollection(TreeSet::new)))));
 
-
-        // Old school
-//        Params.logger.debug(String.format("Searching missing albums for artist '%s'", name));
-//        List<UUID> releases = this.releases(name);
-//        if (CollectionUtils.isNotEmpty(releases)) {
-//            Params.logger.trace(String.format("Artist '%s' found in database", name));
-//            Set<Album> albums = releases
-//                    .stream()
-//                    .map(this::album)
-//                    .map(a -> Model.newAlbum(a.getTitle(), String.valueOf(a.getYear())))
-//                    .collect(Collectors.toSet());
-//            artist.setAlbums(new TreeSet<>(albums));
-//        } else {
-//            Params.logger.trace(String.format("Artist '%s' not found!", name));
-//        }
         return artist;
     }
 
