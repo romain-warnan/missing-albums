@@ -1,4 +1,4 @@
-package fr.plaisance.arn.bean2;
+package fr.plaisance.arn.musicbrainz;
 
 import com.owlike.genson.annotation.JsonConverter;
 import com.owlike.genson.annotation.JsonProperty;

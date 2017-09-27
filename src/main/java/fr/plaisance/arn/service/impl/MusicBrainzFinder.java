@@ -1,11 +1,9 @@
 package fr.plaisance.arn.service.impl;
 
-import fr.plaisance.arn.bean.MusicBrainzAlbum;
-import fr.plaisance.arn.bean.MusicBrainzReleases;
-import fr.plaisance.arn.bean2.ArtistCredit;
-import fr.plaisance.arn.bean2.MusicBrainzArtist;
-import fr.plaisance.arn.bean2.ReleaseGroup;
-import fr.plaisance.arn.bean2.ReleaseGroups;
+import fr.plaisance.arn.musicbrainz.ArtistCredit;
+import fr.plaisance.arn.musicbrainz.MusicBrainzArtist;
+import fr.plaisance.arn.musicbrainz.ReleaseGroup;
+import fr.plaisance.arn.musicbrainz.ReleaseGroups;
 import fr.plaisance.arn.main.Params;
 import fr.plaisance.arn.model.Artist;
 import fr.plaisance.arn.model.Model;
@@ -22,7 +20,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -60,6 +60,15 @@ public class MusicBrainzFinder implements ArtistFinder {
         USER_AGENT = properties.getProperty("user.agent");
     }
 
+
+    @Override
+    public Artist find(String name) {
+        Artist artist = Model.newArtist(name);
+        List<ReleaseGroup> releaseGroups = this.releaseGroups(name);
+        this.addReleasesToArtist(artist, releaseGroups);
+        return artist;
+    }
+
     private MusicBrainzArtist artist(ArtistCredit artistCredit) {
         return client.target(HOST)
                 .path("ws/2")
@@ -72,36 +81,7 @@ public class MusicBrainzFinder implements ArtistFinder {
                 .get(MusicBrainzArtist.class);
     }
 
-    @Override
-    public Artist find(String name) {
-        List<ReleaseGroup> releaseGroups = this.releaseGroups(name)
-                .getReleaseGroups()
-                .stream()
-                .filter(release -> release.getScore() > 90)
-                .collect(Collectors.toList());
-
-        Optional<Optional<MusicBrainzArtist>> musicBrainzArtist = releaseGroups
-                .stream()
-                .filter(group -> group.getScore() >= 90)
-                .findFirst()
-                .map(releaseGroup -> releaseGroup.getArtistCredits()
-                        .stream()
-                        .findFirst()
-                        .map(this::artist));
-
-        Artist artist = Model.newArtist(name);
-        musicBrainzArtist.ifPresent(
-                a -> a.ifPresent(
-                        b -> artist.setAlbums(b.getReleaseGroups()
-                                .stream()
-                                .filter(releaseGroup -> releaseGroups.contains(releaseGroup))
-                                .map(r -> Model.newAlbum(r.getTitle(), r.getReleaseDate()))
-                                .collect(Collectors.toCollection(TreeSet::new)))));
-
-        return artist;
-    }
-
-    private ReleaseGroups releaseGroups(String artistName) {
+    private List<ReleaseGroup> releaseGroups(String artistName) {
         this.sleep();
         return client.target(HOST)
                 .path("ws/2")
@@ -110,37 +90,28 @@ public class MusicBrainzFinder implements ArtistFinder {
                 .queryParam("query", String.format(RELEASE_QUERY, artistName))
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.USER_AGENT, USER_AGENT)
-                .get(ReleaseGroups.class);
-    }
-
-    private List<UUID> releases(String artistName) {
-        this.sleep();
-        return client.target(HOST)
-                .path("ws/2")
-                .path("release-group")
-                .queryParam("limit", 100)
-                .queryParam("query", String.format(RELEASE_QUERY, artistName))
-                .request(MediaType.APPLICATION_XML)
-                .header(HttpHeaders.USER_AGENT, USER_AGENT)
-                .get(MusicBrainzReleases.class)
-                .getList()
-                .getReleases()
+                .get(ReleaseGroups.class).getReleaseGroups()
                 .stream()
                 .filter(release -> release.getScore() > 90)
-                .map(release -> release.getId())
                 .collect(Collectors.toList());
     }
 
-    private MusicBrainzAlbum.MusicBrainzReleaseGroup album(UUID release) {
-        this.sleep();
-        return client.target(HOST)
-                .path("ws/2")
-                .path("release-group")
-                .path(release.toString())
-                .request(MediaType.APPLICATION_XML)
-                .header(HttpHeaders.USER_AGENT, USER_AGENT)
-                .get(MusicBrainzAlbum.class)
-                .getAlbum();
+    private void addReleasesToArtist(Artist artist, List<ReleaseGroup> releaseGroups) {
+        releaseGroups
+                .stream()
+                .filter(group -> group.getScore() >= 90)
+                .findFirst()
+                .map(releaseGroup -> releaseGroup.getArtistCredits()
+                        .stream()
+                        .findFirst()
+                        .map(this::artist))
+                .ifPresent(
+                        a -> a.ifPresent(
+                                b -> artist.setAlbums(b.getReleaseGroups()
+                                        .stream()
+                                        .filter(releaseGroups::contains)
+                                        .map(releaseGroup -> Model.newAlbum(releaseGroup.getTitle(), releaseGroup.getReleaseDate()))
+                                        .collect(Collectors.toCollection(TreeSet::new)))));
     }
 
     private void sleep() {
