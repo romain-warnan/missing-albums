@@ -1,7 +1,6 @@
 package fr.plaisance.arn.main;
 
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.converters.CommaParameterSplitter;
 import fr.plaisance.arn.model.Artist;
 import org.apache.log4j.Logger;
 
@@ -29,16 +28,15 @@ public class Params {
 
     public static final Logger logger = Logger.getLogger("fr.plaisance");
 
-    @Parameter(names = {"-a", "--artists"}, converter = ArtistConverter.class, splitter = CommaParameterSplitter.class, description =
+    @Parameter(names = {"-a", "--artists"}, converter = ArtistConverter.class, description =
         "Comma separated list of artists names you are interrested in. " +
         "Example: --artists \"Amon Amarth,Bjork\"")
     public List<Artist> artists = new ArrayList<>();
 
-
-    @Parameter(names = {"-l", "--artist-list"}, converter = ArtistsListConverter.class, description =
-        "File that contains a list of artists names you are interrested in. " +
+    @Parameter(names = {"-f", "--artists-file"}, converter = ArtistsListConverter.class, description =
+        "Path of a file that contains a list of artists names you are interrested in. " +
         "One artist name per line. " +
-        "Example: --artist-list /home/name/artists.txt")
+        "Example: --artists-file /home/name/artists.txt")
     public Set<Artist> artistList = new HashSet<>();
 
     @Parameter(names = {"-q", "--quiet"}, description =
@@ -73,7 +71,7 @@ public class Params {
         "Example: --proxy http://123.15.12.1:8081, --proxy http://proxy.my-company.com:8080")
     public String proxy = null;
 
-    @Parameter(names = {"-f", "--output-format"}, description =
+    @Parameter(names = {"-o", "--output-format"}, description =
         "Format of the output. There are three formats:" +
         "- csv: comma separated values, " +
         "- tsv: tabulation separated values, " +
