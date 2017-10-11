@@ -19,8 +19,8 @@ java -jar missing-albums.jar [options]
 
 ## Options
 
- - `-l`, `--artist-list` — File that contains a list of artists names you are interrested in. One artist name per line.  
- Example: `--artist-list /home/name/artists.txt`
+ - `-f`, `--artists-file` — Path to a file that contains a list of artists names you are interrested in. One artist name per line.  
+ Example: `--artists-file /home/user/artists.txt`
     
  - `-a`, `--artists` — Comma separated list of artists names you are interrested in.  
  Example: `--artists "Amon Amarth,Bjork"`
@@ -28,7 +28,7 @@ java -jar missing-albums.jar [options]
  - `-g`, `--genre` — Search missing albums for all artists of the specified genre.  
  Example: `--genre Metal`
    
- - `-f`, `--output-format` — Format of the output. There are three formats:
+ - `-o`, `--output-format` — Format of the output. There are three formats:
     - csv: comma separated values,
     - tsv: tabulation separated values,
     - list: each values is in a column of fixed sized.  
@@ -45,13 +45,13 @@ java -jar missing-albums.jar [options]
  - `-v`, `--verbose` — Show detail log messages.  
  Example: `--verbose`
  
- - `-y`, `--year` — Missing albums will not be displayed if they were released before this year.  
+ - `-y`, `--year` — Missing albums will not be displayed if they were released before this year.
  Example: `--year 2015`
 
  - `-x`, `--proxy` — If your network uses a proxy to connect to the internet, the uri of the proxy server.
  Example:` --proxy http://123.15.12.1:8081`, `--proxy http://proxy.my-company.com:8080`  
 
- - `-p`, `--path` — The folder in which the program will recursively search for audio files.
+ - `-p`, `--library-path` — The folder in which the program will recursively search for audio files.
  If the path is not specified, the program will search in the current directory.  
  Examples: `--path /mnt/audio/music`, `--path "D:\Mes Documents\Music"`  
  Default: `.`
