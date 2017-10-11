@@ -46,13 +46,16 @@ public class AlbumService {
     }
 
     private static String fromYear(String year, SortedSet<Album> albums) {
-        if(StringUtils.isNotBlank(year)){
-            return year;
+        if (StringUtils.isBlank(year)) {
+            return "0";
         }
-        return albums.stream()
-            .map(Album::getYear)
-            .max(Comparator.naturalOrder())
-            .orElse("0");
+        if (StringUtils.equalsIgnoreCase(year, "after")) {
+            return albums.stream()
+                .map(Album::getYear)
+                .max(Comparator.naturalOrder())
+                .orElse("0");
+        }
+        return year;
     }
 
     private static Library filter(Library library, List<Artist> artists, String genre) {
