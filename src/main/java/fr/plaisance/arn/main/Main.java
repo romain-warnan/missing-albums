@@ -54,7 +54,12 @@ public class Main {
         }
 
         if (StringUtils.isNotBlank(params.year)) {
-            Params.logger.debug(String.format("Searching for missing albums after year %s", params.year));
+            if (StringUtils.equalsIgnoreCase(params.year, "after")) {
+                Params.logger.debug("Searching for missing albums released after the latest of your library");
+            }
+            else {
+                Params.logger.debug(String.format("Searching for missing albums released after year %s", params.year));
+            }
         }
 
         return params;

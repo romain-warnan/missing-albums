@@ -57,8 +57,9 @@ public class Params {
 
     @Parameter(names = {"-y", "--year"}, description =
         "If set, missing albums will not be displayed if they were released before this year. " +
-        "If not, only missing albums that have been released after the latest one in the library will be displayed. " +
-        "Example: --year 2015")
+        "If not set, all missing albums that have ever been released will be displayed. " +
+        "If set to \"after\", only missing albums that have been released after the latest one in the library will be displayed. " +
+        "Examples: --year 2015, --year after")
     public String year = null;
 
     @Parameter(names = {"-g", "--genre"}, description =
