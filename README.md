@@ -45,7 +45,9 @@ java -jar missing-albums.jar [options]
  - `-v`, `--verbose` — Show detail log messages.  
  Example: `--verbose`
  
- - `-y`, `--year` — Missing albums will not be displayed if they were released before this year.
+ - `-y`, `--year` — If set, missing albums will not be displayed if they were released before this year.
+ If not set, all missing albums that have ever been released will be displayed.
+ If set to `after`, only missing albums that have been released after the latest one in the library will be displayed.
  Example: `--year 2015`
 
  - `-x`, `--proxy` — If your network uses a proxy to connect to the internet, the uri of the proxy server.
