@@ -86,7 +86,7 @@ public class Params {
         "Example: --help")
     public Boolean help = false;
 
-    @Parameter(names = {"-p", "--path"}, description =
+    @Parameter(names = {"-p", "--library-path"}, description =
         "The folder in which the program will recursively search for audio files. " +
         "If the path is not specified, the program will search in the current directory. " +
         "Examples: --path /mnt/audio/music, --path \"D:\\Mes Documents\\Music\"")
