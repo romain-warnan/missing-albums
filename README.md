@@ -55,5 +55,5 @@ java -jar missing-albums.jar [options]
 
  - `-p`, `--library-path` — The folder in which the program will recursively search for audio files.
  If the path is not specified, the program will search in the current directory.  
- Examples: `--path /mnt/audio/music`, `--path "D:\Mes Documents\Music"`  
+ Examples: `--library-path /mnt/audio/music`, `--library-path "D:\Mes Documents\Music"`  
  Default: `.`
