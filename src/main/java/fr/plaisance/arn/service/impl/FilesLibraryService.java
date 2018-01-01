@@ -105,7 +105,7 @@ public class FilesLibraryService implements LocalLibraryService {
                 int pourcentage = (currentStep * 100) / BAR_SIZE;
                 if(Params.logger.isDebugEnabled()){
                     System.out.print(
-                        StringUtils.rightPad("\r[", currentStep + 1, "=") +
+                        StringUtils.rightPad("\r[", currentStep + 1, "#") +
                         StringUtils.leftPad("]", BAR_SIZE + 1 - currentStep, " ") +
                         " " + pourcentage + "% ");
                 }
