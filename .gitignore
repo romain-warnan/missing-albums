@@ -5,3 +5,6 @@ src/test/
 
 *.iml
 *.jar
+
+.classpath
+.project
